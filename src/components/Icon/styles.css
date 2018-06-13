@@ -1,0 +1,33 @@
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-circle:before {
+  content: "\e900";
+}
+.icon-star:before {
+  content: "\e9d9";
+}
+.icon-no:before {
+  content: "\ea0f";
+}
+.icon-yes:before {
+  content: "\ea10";
+}
+.icon-triangle:before {
+  content: "\ea1c";
+}
+.icon-square:before {
+  content: "\ea1e";
+}

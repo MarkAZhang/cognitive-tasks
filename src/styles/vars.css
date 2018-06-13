@@ -1,7 +1,12 @@
-$blue: #002147;
-$white: #eeeeee;
-$red: #bb133e;
-$yellow: #ffc514;
-$black: #333333;
+$gray: #F0EFF3;
+$gray-gradient-lite: #F9F8FC;
+$light-gray-2: #BCBBBC;
+$light-gray-3: #999;
 
-$box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+$dark-gray-1: #35383A;
+$dark-gray-2: #555A5E;
+
+$green: #25B89A;
+$red: #e56b6e;
+
+$box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.2);

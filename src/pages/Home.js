@@ -1,11 +1,12 @@
 import { Component } from 'react'
 
-import { TaskEngine, TitleState } from '~/components'
+import { TaskEngine, TitleState, InstructionState } from '~/components'
 
 import cs from './styles.css'
 
 const taskStates = {
   title: TitleState,
+  instruction: InstructionState,
 }
 
 class Home extends Component {

@@ -1,0 +1,56 @@
+@import 'vars.css';
+
+.titleState {
+  color: $dark-gray-2;
+}
+
+.header {
+  @mixin flex down, center, end;
+  height: 200px;
+  width: 100%;
+}
+
+.title {
+  font-size: 48px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  margin-left: 5px; /* For mysterious reasons, the title is slightly off-center */
+}
+
+.subtitle {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  color: $light-gray-2;
+}
+
+.icons {
+  @mixin flex right, center, spaceBetween;
+  width: 200px;
+  margin: 0 auto;
+  font-size: 28px;
+  margin-top: 30px;
+  opacity: 0.2;
+  padding-right: 10px;
+}
+
+.startContainer {
+  @mixin flex down, center, center;
+  position: absolute;
+  bottom: 75px;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+
+  .startButton {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 12px;
+    margin-left: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: $green;
+    }
+  }
+}

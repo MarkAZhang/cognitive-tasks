@@ -11,12 +11,18 @@ class TaskEngine extends Component {
     }
   }
 
+  switchState = newState => {
+    this.setState({
+      currentState: newState,
+    })
+  }
+
   render() {
     const CurrentState = this.props.taskStates[this.state.currentState]
 
     return (
       <div className={cs.taskEngineContainer}>
-        <CurrentState />
+        <CurrentState switchState={this.switchState} />
       </div>
     )
   }
