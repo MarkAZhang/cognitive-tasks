@@ -1,6 +1,6 @@
 import { range, random, pull, forEach } from 'lodash/fp'
 
-const MATCH_CHANCE = 0.25
+const MATCH_CHANCE = 0.5
 
 const SHAPES = [
   'circle',

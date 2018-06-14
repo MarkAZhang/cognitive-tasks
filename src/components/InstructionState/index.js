@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types'
 import cx from 'classnames'
 import { Component } from 'react'
 
+import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
 import { generateShapes } from '~/utils/shapes'
 
@@ -31,17 +31,24 @@ ExampleBlock.propTypes = {
 
 export default class InstructionState extends Component {
   state = {
-    exampleShapes: generateShapes(1, EXAMPLE_NUMBER, true),
+    exampleShapes: generateShapes(this.props.taskData.n, EXAMPLE_NUMBER, true),
+  }
+
+  onStart = () => {
+    this.props.switchState('nback')
   }
 
   render() {
     return (
       <div className={cs.titleState}>
-        <div className={cs.title}>Instructions</div>
+        <div className={cs.levelDisplay}>Level {this.props.taskData.n}</div>
         <div className={cs.instructions}>
           <div className={cs.instruction}>
-            If the current shape is the same as the last shape,
-            press <Icon className={cx(cs.inlineIcon, cs.yesIcon)} glyph='yes' />.
+            {this.props.taskData.n === 1
+              ? <span>If the current shape is the same as <b>the last shape</b>,</span>
+              : <span>If the current shape is the same as the shape <b>{this.props.taskData.n} steps ago</b>,</span>
+            }
+            &nbsp;press <Icon className={cx(cs.inlineIcon, cs.yesIcon)} glyph='yes' />.
           </div>
           <div className={cs.instruction}>
             Otherwise, press <Icon className={cx(cs.inlineIcon, cs.noIcon)} glyph='no' />.
@@ -53,15 +60,21 @@ export default class InstructionState extends Component {
             <ExampleBlock
               index={index}
               shapes={this.state.exampleShapes}
-              n={1}
+              n={this.props.taskData.n}
               key={index}
             />
           )}
         </div>
         <div className={cs.startContainer}>
-          <div className={cs.startButton}>Start</div>
+          <div className={cs.startButton} onClick={this.onStart}>Start</div>
         </div>
       </div>
     )
   }
+}
+
+InstructionState.propTypes = {
+  switchState: PropTypes.func.isRequired,
+  updateTaskData: PropTypes.func.isRequired,
+  taskData: PropTypes.taskData,
 }

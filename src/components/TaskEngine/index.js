@@ -1,6 +1,7 @@
 import { Component } from 'react'
-import PropTypes from 'prop-types'
+import { assign } from 'lodash/fp'
 
+import PropTypes from '~/utils/propTypes'
 import cs from './styles.css'
 
 class TaskEngine extends Component {
@@ -8,6 +9,7 @@ class TaskEngine extends Component {
     super(props)
     this.state = {
       currentState: props.startState,
+      taskData: props.startTaskData,
     }
   }
 
@@ -17,12 +19,22 @@ class TaskEngine extends Component {
     })
   }
 
+  updateTaskData = newData => {
+    this.setState({
+      taskData: assign(this.state.taskData, newData),
+    })
+  }
+
   render() {
     const CurrentState = this.props.taskStates[this.state.currentState]
 
     return (
       <div className={cs.taskEngineContainer}>
-        <CurrentState switchState={this.switchState} />
+        <CurrentState
+          switchState={this.switchState}
+          updateTaskData={this.updateTaskData}
+          taskData={this.state.taskData}
+        />
       </div>
     )
   }
@@ -31,6 +43,7 @@ class TaskEngine extends Component {
 TaskEngine.propTypes = {
   taskStates: PropTypes.objectOf(PropTypes.any),
   startState: PropTypes.string,
+  startTaskData: PropTypes.taskData,
 }
 
 export default TaskEngine

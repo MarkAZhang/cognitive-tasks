@@ -1,12 +1,17 @@
 import { Component } from 'react'
 
-import { TaskEngine, TitleState, InstructionState } from '~/components'
+import {
+  TaskEngine, TitleState, InstructionState, NBackState, EndState, LevelUpState
+} from '~/components'
 
 import cs from './styles.css'
 
 const taskStates = {
   title: TitleState,
   instruction: InstructionState,
+  nback: NBackState,
+  end: EndState,
+  levelup: LevelUpState,
 }
 
 class Home extends Component {
@@ -16,6 +21,10 @@ class Home extends Component {
         <TaskEngine
           taskStates={taskStates}
           startState='title'
+          startTaskData={{
+            n: 1,
+            userAnswers: [],
+          }}
         />
       </div>
     )

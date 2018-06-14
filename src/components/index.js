@@ -1,4 +1,7 @@
+export EndState from './EndState'
 export Icon from './Icon'
 export InstructionState from './InstructionState'
+export LevelUpState from './LevelUpState'
+export NBackState from './NBackState'
 export TaskEngine from './TaskEngine'
 export TitleState from './TitleState'

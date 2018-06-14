@@ -6,4 +6,5 @@
   background: linear-gradient($gray-gradient-lite, $gray);
   position: relative;
   box-shadow: $box-shadow;
+  user-select: none;
 }
