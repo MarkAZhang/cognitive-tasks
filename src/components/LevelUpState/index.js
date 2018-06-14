@@ -4,7 +4,7 @@ import { Component } from 'react'
 import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
 import { generateShapes } from '~/utils/shapes'
-import calculateAccuracyForN from '~/utils/score'
+import { calculateAccuracyForN } from '~/utils/score'
 
 import cs from './styles.css'
 

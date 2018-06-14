@@ -4,7 +4,7 @@ import { Component } from 'react'
 import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
 import { generateShapes } from '~/utils/shapes'
-import calculateAccuracyForN from '~/utils/score'
+import { calculateAccuracyForN } from '~/utils/score'
 
 import cs from './styles.css'
 
@@ -34,7 +34,7 @@ export default class EndState extends Component {
           </div>
         </div>
         <div className={cs.label}>
-          Thank you for taking the test!
+          Thank you for taking the test.
         </div>
         <div className={cs.startContainer}>
           <div className={cs.startButton} onClick={this.onStart}>Back to Title</div>

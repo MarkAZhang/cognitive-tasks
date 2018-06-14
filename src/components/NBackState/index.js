@@ -10,6 +10,7 @@ import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
 import { generateShapes } from '~/utils/shapes'
 import getAnimationClassNames from '~/utils/animation'
+import { getCurrentNBreakdown } from '~/utils/score'
 
 import cs from './styles.css'
 
@@ -25,24 +26,20 @@ export default class NBackState extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const pastAnswers = filter(['n', nextProps.taskData.n], nextProps.taskData.userAnswers)
+    const breakdown = getCurrentNBreakdown(nextProps.taskData.userAnswers, nextProps.taskData.n)
 
-    const wrongAnswers = filter(o => o.userAnswer !== o.correctAnswer, pastAnswers)
-    const correctMatches = filter(o => o.userAnswer === 'yes' && o.correctAnswer === 'yes', pastAnswers)
-
-    if (wrongAnswers.length >= MAX_WRONG) {
+    if (breakdown.wrongAnswers.length >= MAX_WRONG) {
       nextProps.switchState('end')
       return
     }
 
-
-    if (correctMatches.length >= MAX_CORRECT) {
+    if (breakdown.correctPositiveAnswers.length >= MAX_CORRECT) {
       nextProps.switchState('levelup')
       return
     }
 
     this.setState({
-      index: pastAnswers.length,
+      index: breakdown.currentNAnswers.length,
     })
   }
 
@@ -58,7 +55,7 @@ export default class NBackState extends Component {
       userAnswer: yes ? 'yes': 'no',
       correctAnswer: correctAnswer ? 'yes' : 'no',
       n: this.props.taskData.n,
-      index: this.state.index + 1,
+      index: this.state.index,
       // Add timer
     }
 
@@ -85,14 +82,41 @@ export default class NBackState extends Component {
             </CSSTransition>
           </TransitionGroup>
         </div>
-        <div className={cs.controls}>
-          <div className={cs.button} onClick={() => this.select(false)}>
-            <Icon glyph='no' className={cs.noIcon} />
-          </div>
-          <div className={cs.button} onClick={() => this.select(true)}>
-            <Icon glyph='yes' className={cs.yesIcon} />
-          </div>
-        </div>
+        <TransitionGroup className={cs.controlsAnimationGroup}>
+          {this.state.index >= this.props.taskData.n
+            ? <CSSTransition
+              key='normalControls'
+              timeout={{
+                enter: 600,
+                exit: 200
+              }}
+              classNames={getAnimationClassNames('controlsAnimation', cs)}
+            >
+              <div className={cs.controls}>
+                <div className={cs.button} onClick={() => this.select(false)}>
+                  <Icon glyph='no' className={cs.noIcon} />
+                </div>
+                <div className={cs.button} onClick={() => this.select(true)}>
+                  <Icon glyph='yes' className={cs.yesIcon} />
+                </div>
+              </div>
+            </CSSTransition>
+            : <CSSTransition
+              key='startControls'
+              timeout={{
+                enter: 600,
+                exit: 200
+              }}
+              classNames={getAnimationClassNames('controlsAnimation', cs)}
+            >
+              <div className={cs.controls}>
+                <div className={cx(cs.button, cs.nextButton)} onClick={() => this.select(true)}>
+                  <span className={cs.nextLabel}>Next</span>
+                </div>
+              </div>
+            </CSSTransition>
+          }
+        </TransitionGroup>
       </div>
     )
   }

@@ -23,6 +23,7 @@
 .controls {
   @mixin flex right, center, center;
   margin-top: 50px;
+  position: absolute;
 
   .button {
     @mixin flex right, center, center;
@@ -43,6 +44,18 @@
 
     &:not(:first-child) {
       margin-left: 30px;
+    }
+  }
+
+  .nextButton {
+    width: 150px;
+
+    .nextLabel {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      margin-left: 8px;
+      color: $dark-gray-1;
     }
   }
 
@@ -82,6 +95,35 @@
 }
 
 .shapeAnimationExitActive {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.controlsAnimationGroup {
+  position: relative;
+  width: 150px;
+  height: 60px;
+  margin: 0 auto;
+}
+
+.controlsAnimationEnter {
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 200ms linear 400ms, transform 200ms linear 400ms;
+}
+
+.controlsAnimationEnterActive {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.controlsAnimationExit {
+  opacity: 1;
+  transition: opacity 200ms, transform 200ms;
+  transform: translateX(0px);
+}
+
+.controlsAnimationExitActive {
   opacity: 0;
   transform: translateX(-10px);
 }
