@@ -1,0 +1,79 @@
+@import 'vars.css';
+
+.titleState {
+  color: $dark-gray-2;
+}
+
+.header {
+  @mixin flex down, center, end;
+  height: 225px;
+  width: 100%;
+}
+
+.title {
+  font-size: 42px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  margin-left: 5px; /* For mysterious reasons, the title is slightly off-center */
+  text-align: center;
+  width: 400px;
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  color: $light-gray-2;
+}
+
+.digits {
+  width: 250px;
+  margin: 0 auto;
+  margin-top: 30px;
+
+  .row, .rowTwo, .rowThree {
+    @mixin flex right, center, center;
+  }
+
+  .digit {
+    font-weight: bold;
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    font-size: 28px;
+  }
+
+  .row {
+    opacity: 0.5;
+  }
+
+  .rowTwo {
+    opacity: 0.3;
+  }
+
+  .rowThree {
+    opacity: 0.1;
+  }
+}
+
+.startContainer {
+  @mixin flex down, center, center;
+  position: absolute;
+  bottom: 75px;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+
+  .startButton {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 12px;
+    margin-left: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: $green;
+    }
+  }
+}

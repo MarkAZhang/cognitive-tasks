@@ -1,0 +1,129 @@
+@import 'vars.css';
+
+.levelDisplay {
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  color: $light-gray-2;
+  text-align: center;
+  margin-left: 10px;
+  margin-top: 60px;
+}
+
+.currentShapeContainer {
+  margin-top: 30px;
+
+  .currentShape {
+    font-size: 160px;
+    color: $dark-gray-2;
+    position: absolute;
+  }
+}
+
+.controls {
+  @mixin flex right, center, center;
+  margin-top: 50px;
+  position: absolute;
+
+  .button {
+    @mixin flex right, center, center;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border: 1px solid #ddd;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $gray-gradient-lite;
+    }
+
+    &:active {
+      box-shadow: none;
+      background-color: $light-gray-2;
+    }
+
+    &:not(:first-child) {
+      margin-left: 30px;
+    }
+  }
+
+  .nextButton {
+    width: 150px;
+
+    .nextLabel {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      margin-left: 8px;
+      color: $dark-gray-1;
+    }
+  }
+
+  .yesIcon {
+    font-size: 24px;
+    color: $green;
+  }
+
+  .noIcon {
+    font-size: 24px;
+    color: $red;
+  }
+}
+
+.animationGroup {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+}
+
+.shapeAnimationEnter {
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 200ms linear 400ms, transform 200ms linear 400ms;
+}
+
+.shapeAnimationEnterActive {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.shapeAnimationExit {
+  opacity: 1;
+  transition: opacity 200ms, transform 200ms;
+  transform: translateX(0px);
+}
+
+.shapeAnimationExitActive {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.controlsAnimationGroup {
+  position: relative;
+  width: 150px;
+  height: 60px;
+  margin: 0 auto;
+}
+
+.controlsAnimationEnter {
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 200ms linear 400ms, transform 200ms linear 400ms;
+}
+
+.controlsAnimationEnterActive {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.controlsAnimationExit {
+  opacity: 1;
+  transition: opacity 200ms, transform 200ms;
+  transform: translateX(0px);
+}
+
+.controlsAnimationExitActive {
+  opacity: 0;
+  transform: translateX(-10px);
+}

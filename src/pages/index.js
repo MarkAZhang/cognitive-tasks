@@ -1,1 +1,2 @@
-export Home from './Home'
+export BackwardDigitSpan from './BackwardDigitSpan'
+export NBack from './NBack'

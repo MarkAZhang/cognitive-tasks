@@ -1,0 +1,100 @@
+@import 'vars.css';
+
+.titleState {
+  color: $dark-gray-2;
+  padding: 30px;
+}
+
+.levelDisplay {
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  color: $light-gray-2;
+  text-align: center;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.title {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  color: $light-gray-3;
+  text-align: center;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.instructions {
+  margin: 10px auto;
+  width: 300px;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  .instruction {
+    margin-top: 15px;
+  }
+}
+
+.inlineIcon {
+  display: inline-block;
+  transform: translateY(2px);
+}
+
+.yesIcon {
+  color: $green;
+}
+
+.noIcon {
+  color: $red;
+}
+
+.example {
+  @mixin flex right, center, center;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.exampleBlock {
+  @mixin flex down, center;
+  width: 35px;
+
+  .index {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .shape {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+
+  .answer {
+    height: 20px;
+  }
+}
+
+.startContainer {
+  @mixin flex down, center, center;
+  position: absolute;
+  bottom: 75px;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+
+  .startButton {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 12px;
+    margin-left: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: $green;
+    }
+  }
+}

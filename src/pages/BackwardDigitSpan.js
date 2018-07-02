@@ -1,8 +1,9 @@
 import { Component } from 'react'
 
+import { TaskEngine } from '~/components'
 import {
-  TaskEngine, TitleState, InstructionState, NBackState, EndState, LevelUpState
-} from '~/components'
+  TitleState, InstructionState, NBackState, EndState, LevelUpState
+} from '~/components/BackwardDigitSpan'
 
 import cs from './styles.css'
 
@@ -14,7 +15,7 @@ const taskStates = {
   levelup: LevelUpState,
 }
 
-class Home extends Component {
+class BackwardDigitSpan extends Component {
   render() {
     return (
       <div className={cs.center}>
@@ -31,4 +32,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default BackwardDigitSpan
