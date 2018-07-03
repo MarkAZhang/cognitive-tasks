@@ -1,0 +1,219 @@
+@import 'vars.css';
+
+.levelDisplay {
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  color: $light-gray-2;
+  text-align: center;
+  margin-left: 10px;
+  margin-top: 60px;
+}
+
+.currentShapeContainer {
+  margin-top: 30px;
+
+  .currentShape {
+    font-size: 160px;
+    color: $dark-gray-2;
+    position: absolute;
+  }
+}
+
+.controls {
+  @mixin flex right, center, center;
+  position: absolute;
+  left: 50px;
+  bottom: 100px;
+  width: 400px;
+  flex-wrap: wrap;
+
+  .button {
+    @mixin flex right, center, center;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    margin: 15px;
+
+    &.disabled {
+      background-color: $gray-gradient-lite;
+      cursor: default;
+      color: $light-gray-3;
+
+      &:active {
+        background-color: $gray-gradient-lite;
+      }
+    }
+
+    &:hover {
+      background-color: $gray-gradient-lite;
+    }
+
+    &:active {
+      box-shadow: none;
+      background-color: $light-gray-2;
+    }
+  }
+
+  .nextButton {
+    width: 150px;
+
+    .nextLabel {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      margin-left: 8px;
+      color: $dark-gray-1;
+    }
+  }
+
+  .yesIcon {
+    font-size: 24px;
+    color: $green;
+  }
+
+  .noIcon {
+    font-size: 24px;
+    color: $red;
+  }
+}
+
+.blanks {
+  @mixin flex right, center, center;
+  position: absolute;
+  width: 400px;
+  left: 50px;
+  top: 140px;
+
+  .enteredDigit {
+    @mixin flex right, center, center;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    border-bottom: 1px solid $dark-gray-1;
+    font-size: 18px;
+    font-weight: bold;
+    color: $dark-gray-1;
+  }
+}
+
+.answers {
+  @mixin flex right, center, center;
+  position: absolute;
+  width: 400px;
+  left: 50px;
+  top: 165px;
+
+  .answer {
+    @mixin flex down, center;
+  }
+
+  .answerDigit, .answerIcon {
+    @mixin flex right, center, center;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    font-size: 18px;
+  }
+
+  .answerDigit {
+    font-weight: bold;
+    color: $light-gray-2;
+  }
+
+  .yesIcon {
+    color: $green;
+  }
+
+  .noIcon {
+    color: $red;
+  }
+}
+
+.digit {
+  @mixin flex right, center, center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 144px;
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+.digitAnimationGroup {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  top: 160px;
+  left: 170px;
+}
+
+.digitAnimationEnter, .digitAnimationAppear {
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 200ms linear 400ms, transform 200ms linear 400ms;
+}
+
+.digitAnimationEnterActive, .digitAnimationAppearActive {
+  opacity: 0.7;
+  transform: translateX(0px);
+}
+
+.digitAnimationExit {
+  opacity: 0.7;
+  transition: opacity 200ms, transform 200ms;
+  transform: translateX(0px);
+}
+
+.digitAnimationExitActive {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.answerAnimationGroup {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+.answerAnimationEnter, .answerAnimationAppear {
+  opacity: 0;
+  transition: opacity 200ms linear 400ms;
+}
+
+.answerAnimationEnterActive, .answerAnimationAppearActive {
+  opacity: 0.7;
+}
+
+.answerAnimationExit {
+  opacity: 0.7;
+  transition: opacity 200ms;
+}
+
+.answerAnimationExitActive {
+  opacity: 0;
+}
+
+.startContainer {
+  @mixin flex down, center, center;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+
+  .startButton {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 12px;
+    margin-left: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: $green;
+    }
+  }
+}

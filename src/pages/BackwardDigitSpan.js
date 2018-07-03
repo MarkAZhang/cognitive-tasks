@@ -2,7 +2,7 @@ import { Component } from 'react'
 
 import { TaskEngine } from '~/components'
 import {
-  TitleState, InstructionState, NBackState, EndState, LevelUpState
+  TitleState, InstructionState, CoreTaskState, EndState, LevelUpState
 } from '~/components/BackwardDigitSpan'
 
 import cs from './styles.css'
@@ -10,7 +10,7 @@ import cs from './styles.css'
 const taskStates = {
   title: TitleState,
   instruction: InstructionState,
-  nback: NBackState,
+  coretask: CoreTaskState,
   end: EndState,
   levelup: LevelUpState,
 }
@@ -23,7 +23,7 @@ class BackwardDigitSpan extends Component {
           taskStates={taskStates}
           startState='title'
           startTaskData={{
-            n: 1,
+            n: 11,
             userAnswers: [],
           }}
         />

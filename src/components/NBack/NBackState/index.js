@@ -8,9 +8,9 @@ import {
 
 import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
-import { generateShapes } from '~/utils/shapes'
+import { generateShapes } from '~/utils/nback/shapes'
+import { getCurrentNBreakdown } from '~/utils/nback/score'
 import getAnimationClassNames from '~/utils/animation'
-import { getCurrentNBreakdown } from '~/utils/score'
 
 import cs from './styles.css'
 

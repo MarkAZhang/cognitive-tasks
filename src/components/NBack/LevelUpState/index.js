@@ -3,8 +3,8 @@ import { Component } from 'react'
 
 import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
-import { generateShapes } from '~/utils/shapes'
-import { calculateAccuracyForN } from '~/utils/score'
+import { generateShapes } from '~/utils/nback/shapes'
+import { calculateAccuracyForN } from '~/utils/nback/score'
 
 import cs from './styles.css'
 

@@ -3,7 +3,7 @@ import { Component } from 'react'
 
 import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
-import { generateShapes } from '~/utils/shapes'
+import { generateShapes } from '~/utils/nback/shapes'
 
 import cs from './styles.css'
 
@@ -35,7 +35,7 @@ export default class InstructionState extends Component {
   }
 
   onStart = () => {
-    this.props.switchState('nback')
+    this.props.switchState('coretask')
   }
 
   render() {
@@ -45,25 +45,16 @@ export default class InstructionState extends Component {
         <div className={cs.instructions}>
           <div className={cs.instruction}>
             {this.props.taskData.n === 1
-              ? <span>If the current shape is the same as <b>the last shape</b>,</span>
-              : <span>If the current shape is the same as the shape <b>{this.props.taskData.n} steps ago</b>,</span>
+              ? <span>You will be shown 1 digit.</span>
+              : <span>You will be shown {this.props.taskData.n} digits, one after another</span>
             }
-            &nbsp;press <Icon className={cx(cs.inlineIcon, cs.yesIcon)} glyph='yes' />.
           </div>
           <div className={cs.instruction}>
-            Otherwise, press <Icon className={cx(cs.inlineIcon, cs.noIcon)} glyph='no' />.
+            {this.props.taskData.n === 1
+              ? <span>Remember this digit and enter it on the following screen.</span>
+              : <span>Remember these digits and <b>enter them backwards</b> on the following screen.</span>
+            }
           </div>
-        </div>
-        <div className={cs.title}>Example</div>
-        <div className={cs.example}>
-          {_.range(0, this.state.exampleShapes.length).map(index =>
-            <ExampleBlock
-              index={index}
-              shapes={this.state.exampleShapes}
-              n={this.props.taskData.n}
-              key={index}
-            />
-          )}
         </div>
         <div className={cs.startContainer}>
           <div className={cs.startButton} onClick={this.onStart}>Start</div>

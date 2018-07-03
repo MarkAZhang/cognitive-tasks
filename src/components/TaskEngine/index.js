@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { assign } from 'lodash/fp'
 
 import PropTypes from '~/utils/propTypes'
+
 import cs from './styles.css'
 
 class TaskEngine extends Component {

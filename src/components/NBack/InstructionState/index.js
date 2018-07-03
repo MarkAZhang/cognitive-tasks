@@ -3,7 +3,7 @@ import { Component } from 'react'
 
 import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
-import { generateShapes } from '~/utils/shapes'
+import { generateShapes } from '~/utils/nback/shapes'
 
 import cs from './styles.css'
 
@@ -54,17 +54,21 @@ export default class InstructionState extends Component {
             Otherwise, press <Icon className={cx(cs.inlineIcon, cs.noIcon)} glyph='no' />.
           </div>
         </div>
-        <div className={cs.title}>Example</div>
-        <div className={cs.example}>
-          {_.range(0, this.state.exampleShapes.length).map(index =>
-            <ExampleBlock
-              index={index}
-              shapes={this.state.exampleShapes}
-              n={this.props.taskData.n}
-              key={index}
-            />
-          )}
-        </div>
+        {this.props.taskData.n <= EXAMPLE_NUMBER &&
+          <div className={cs.title}>Example</div>
+        }
+        {this.props.taskData.n <= EXAMPLE_NUMBER &&
+          <div className={cs.example}>
+            {_.range(0, this.state.exampleShapes.length).map(index =>
+              <ExampleBlock
+                index={index}
+                shapes={this.state.exampleShapes}
+                n={this.props.taskData.n}
+                key={index}
+              />
+            )}
+          </div>
+        }
         <div className={cs.startContainer}>
           <div className={cs.startButton} onClick={this.onStart}>Start</div>
         </div>

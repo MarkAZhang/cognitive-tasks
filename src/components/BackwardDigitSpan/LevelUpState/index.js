@@ -3,8 +3,8 @@ import { Component } from 'react'
 
 import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
-import { generateShapes } from '~/utils/shapes'
-import { calculateAccuracyForN } from '~/utils/score'
+import { generateShapes } from '~/utils/nback/shapes'
+import { calculateAccuracyForN } from '~/utils/nback/score'
 
 import cs from './styles.css'
 
@@ -27,16 +27,6 @@ export default class LevelUpState extends Component {
     return (
       <div className={cs.levelUpState}>
         <div className={cs.levelDisplay}>Level {this.props.taskData.n - 1}</div>
-        <div className={cs.scoreDisplay}>
-          <div className={cs.label}>
-            Your accuracy was
-          </div>
-          <div className={cs.accuracy}>
-            {parseInt(100 * calculateAccuracyForN(
-              this.props.taskData.userAnswers, this.props.taskData.n - 1))
-            }%
-          </div>
-        </div>
         <div className={cs.label}>
           Let's change it up a bit...
         </div>

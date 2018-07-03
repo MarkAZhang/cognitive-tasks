@@ -10,7 +10,7 @@ export default class TitleState extends Component {
   componentWillMount() {
     // Reset data
     this.props.updateTaskData({
-      n: 1,
+      n: 2,
       userAnswers: []
     })
   }
