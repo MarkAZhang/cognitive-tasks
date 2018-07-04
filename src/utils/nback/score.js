@@ -1,7 +1,7 @@
 import { filter } from 'lodash/fp'
 
-const getCurrentNAnswers = (answers, n) =>
-  filter(o => o.n === n, answers)
+const getCurrentNAnswers = (actions, n) =>
+  filter(o => o.type === 'answer' && o.n === n, actions)
 
 const getScorableAnswers = answers =>
   filter(o => o.index >= o.n, answers)

@@ -2,46 +2,95 @@ import cx from 'classnames'
 import { Component } from 'react'
 
 import PropTypes from '~/utils/propTypes'
-import { Icon } from '~/components'
+import { Icon, LiteButton } from '~/components'
 import { generateShapes } from '~/utils/nback/shapes'
-import { calculateAccuracyForN } from '~/utils/nback/score'
+import { calculateAccuracyForN, getCurrentNBreakdown } from '~/utils/nback/score'
+
+import { TEST_NUMBER, MAX_WRONG, MAX_CORRECT } from '../constants'
 
 import cs from './styles.css'
 
 export default class LevelUpState extends Component {
   LevelUpState
-  state = {}
+  state = {
+    stage: 0,
+    nextStage: false,
+    acc: null,
+  }
 
   componentWillMount() {
-    // Increase n.
-    this.props.updateTaskData({
-      n: this.props.taskData.n + 1
+    const breakdown = getCurrentNBreakdown(
+      this.props.taskData.currentSession.actions, this.props.taskData.n
+    )
+
+    this.setState({
+      acc: parseInt(100 * calculateAccuracyForN(
+        this.props.taskData.currentSession.actions, this.props.taskData.n)
+      ),
     })
+
+    const nextStage = breakdown.correctPositiveAnswers.length >= MAX_CORRECT
+
+    if (nextStage) {
+      // Increase n.
+      this.props.updateTaskData({
+        n: this.props.taskData.n + 1
+      })
+      this.setState({
+        nextStage,
+      })
+    }
   }
 
   onStart = () => {
-    this.props.switchState('instruction')
+    if (this.state.stage === 0) {
+      this.setState({
+        stage: 1,
+      })
+    } else {
+      if (this.state.nextStage) {
+        this.props.switchState('instruction')
+      } else {
+        this.props.switchState('title')
+      }
+    }
   }
 
   render() {
     return (
       <div className={cs.levelUpState}>
-        <div className={cs.levelDisplay}>Level {this.props.taskData.n - 1}</div>
-        <div className={cs.scoreDisplay}>
-          <div className={cs.label}>
-            Your accuracy was
+        {this.state.stage === 0 &&
+          <div>
+            <div className={cs.title}>Test results</div>
+            <div className={cs.scoreDisplay}>
+              <div className={cs.label}>
+                Your accuracy on this stage was
+              </div>
+              <div className={cs.accuracy}>
+                {this.state.acc}%
+              </div>
+            </div>
           </div>
-          <div className={cs.accuracy}>
-            {parseInt(100 * calculateAccuracyForN(
-              this.props.taskData.userAnswers, this.props.taskData.n - 1))
-            }%
+        }
+        {this.state.stage === 1 && this.state.nextStage &&
+          <div className={cs.nextStage}>
+            The test will now get harder.
           </div>
-        </div>
-        <div className={cs.label}>
-          Let's change it up a bit...
-        </div>
+        }
+        {this.state.stage === 1 && !this.state.nextStage &&
+          <div className={cs.endOfTest}>
+            <div className={cs.instruction}>
+              This concludes the test.
+            </div>
+            <div className={cs.instruction}>
+              Thank you for your participation.
+            </div>
+          </div>
+        }
         <div className={cs.startContainer}>
-          <div className={cs.startButton} onClick={this.onStart}>Continue</div>
+          <LiteButton className={cs.startButton} onClick={this.onStart}>
+            {this.state.stage === 1 && !this.state.nextStage ? 'Back to Title' : 'Continue'}
+          </LiteButton>
         </div>
       </div>
     )

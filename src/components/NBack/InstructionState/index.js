@@ -39,10 +39,14 @@ export default class InstructionState extends Component {
   }
 
   render() {
+    console.log('user data', this.props.taskData)
     return (
       <div className={cs.titleState}>
         <div className={cs.levelDisplay}>Level {this.props.taskData.n}</div>
         <div className={cs.instructions}>
+          <div className={cs.instruction}>
+            You will be shown a series of shapes.
+          </div>
           <div className={cs.instruction}>
             {this.props.taskData.n === 1
               ? <span>If the current shape is the same as <b>the last shape</b>,</span>

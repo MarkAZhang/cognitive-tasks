@@ -10,8 +10,20 @@ export default class TitleState extends Component {
     // Reset data
     this.props.updateTaskData({
       n: 1,
-      userAnswers: []
+      currentSession: {
+        startTime: new Date,
+        endTime: null,
+        actions: [],
+      }
     })
+  }
+
+  onContinue = () => {
+    if (this.props.taskData.userMetadata.id === null) {
+      this.props.switchState('signin')
+    } else {
+      this.props.switchState('instruction')
+    }
   }
 
   render() {
@@ -30,7 +42,7 @@ export default class TitleState extends Component {
         <div className={cs.startContainer}>
           <div
             className={cs.startButton}
-            onClick={() => this.props.switchState('instruction')}
+            onClick={this.onContinue}
           >
             Start
           </div>

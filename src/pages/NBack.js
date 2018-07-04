@@ -2,7 +2,7 @@ import { Component } from 'react'
 
 import { TaskEngine } from '~/components'
 import {
-  TitleState, InstructionState, NBackState, EndState, LevelUpState
+  TitleState, InstructionState, NBackState, EndState, LevelUpState, SignInState,
 } from '~/components/NBack'
 
 import cs from './styles.css'
@@ -11,8 +11,8 @@ const taskStates = {
   title: TitleState,
   instruction: InstructionState,
   nback: NBackState,
-  end: EndState,
   levelup: LevelUpState,
+  signin: SignInState,
 }
 
 class NBack extends Component {
@@ -24,7 +24,10 @@ class NBack extends Component {
           startState='title'
           startTaskData={{
             n: 1,
-            userAnswers: [],
+            userMetadata: {
+              id: null,
+            },
+            currentSession: {},
           }}
         />
       </div>

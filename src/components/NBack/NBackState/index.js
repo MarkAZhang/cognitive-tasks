@@ -12,12 +12,9 @@ import { generateShapes } from '~/utils/nback/shapes'
 import { getCurrentNBreakdown } from '~/utils/nback/score'
 import getAnimationClassNames from '~/utils/animation'
 
+import { TEST_NUMBER, MAX_WRONG, MAX_CORRECT } from '../constants'
+
 import cs from './styles.css'
-
-const TEST_NUMBER = 1000
-
-const MAX_WRONG = 3
-const MAX_CORRECT = 5
 
 export default class NBackState extends Component {
   state = {
@@ -26,14 +23,13 @@ export default class NBackState extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const breakdown = getCurrentNBreakdown(nextProps.taskData.userAnswers, nextProps.taskData.n)
+    const breakdown = getCurrentNBreakdown(
+      nextProps.taskData.currentSession.actions, nextProps.taskData.n
+    )
 
-    if (breakdown.wrongAnswers.length >= MAX_WRONG) {
-      nextProps.switchState('end')
-      return
-    }
-
-    if (breakdown.correctPositiveAnswers.length >= MAX_CORRECT) {
+    if (breakdown.wrongAnswers.length >= MAX_WRONG ||
+      breakdown.correctPositiveAnswers.length >= MAX_CORRECT
+    ) {
       nextProps.switchState('levelup')
       return
     }
@@ -51,17 +47,18 @@ export default class NBackState extends Component {
     }
 
     const newAnswerEntry = {
+      type: 'answer',
+      timestamp: new Date(),
       shape: this.state.testShapes[this.state.index],
       userAnswer: yes ? 'yes': 'no',
       correctAnswer: correctAnswer ? 'yes' : 'no',
       n: this.props.taskData.n,
       index: this.state.index,
-      // Add timer
     }
 
-    this.props.updateTaskData({
-      userAnswers: concat(this.props.taskData.userAnswers, newAnswerEntry),
-    })
+    this.props.setTaskData('currentSession.actions',
+      concat(this.props.taskData.currentSession.actions, newAnswerEntry),
+    )
   }
 
   render() {
@@ -124,6 +121,6 @@ export default class NBackState extends Component {
 
 NBackState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  updateTaskData: PropTypes.func.isRequired,
+  setTaskData: PropTypes.func.isRequired,
   taskData: PropTypes.taskData,
 }

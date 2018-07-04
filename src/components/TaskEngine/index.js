@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { assign } from 'lodash/fp'
+import { assign, set } from 'lodash/fp'
 
 import PropTypes from '~/utils/propTypes'
 
@@ -20,6 +20,12 @@ class TaskEngine extends Component {
     })
   }
 
+  setTaskData = (path, newData) => {
+    this.setState({
+      taskData: set(path, newData, this.state.taskData),
+    })
+  }
+
   updateTaskData = newData => {
     this.setState({
       taskData: assign(this.state.taskData, newData),
@@ -34,6 +40,7 @@ class TaskEngine extends Component {
         <CurrentState
           switchState={this.switchState}
           updateTaskData={this.updateTaskData}
+          setTaskData={this.setTaskData}
           taskData={this.state.taskData}
         />
       </div>

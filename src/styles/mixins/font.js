@@ -4,45 +4,23 @@ const fontStyles = {
     fontWeight: 300,
     fontSize: 14,
   },
-  heroTitle: {
-    fontSize: 60,
-    fontWeight: 700,
-  },
-  heading: {
-    fontSize: 28,
-    fontWeight: 300,
-  },
-  heading2: {
-    fontSize: 18,
-    fontWeight: 700,
-    textTransform: 'uppercase',
-  },
-  heading3: {
+  title: {
     fontSize: 16,
-    fontWeight: 400,
+    textTransform: 'uppercase',
+    letterSpacing: 12,
   },
-  text: {
-    fontSize: 28,
-    fontWeight: 400,
-  },
-  text2: {
+  instruction: {
     fontSize: 18,
-    fontWeight: 400,
   },
-  text3: {
-    fontSize: 15,
-    fontWeight: 400,
-  },
-  text4: {
-    fontSize: 11,
-  },
-  label: {
-
-  },
-  logo: {
-    fontSize: 20,
+  button: {
+    fontSize: 16,
+    textTransform: 'uppercase',
+    letterSpacing: 12,
     fontWeight: 700,
   },
+  input: {
+    fontSize: 18,
+  }
 }
 
 const font = (rule, type) => {

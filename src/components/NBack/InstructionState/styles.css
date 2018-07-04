@@ -6,19 +6,15 @@
 }
 
 .levelDisplay {
-  font-size: 32px;
-  text-transform: uppercase;
-  letter-spacing: 12px;
-  color: $light-gray-2;
+  @mixin font title;
+  color: $light-gray-3;
   text-align: center;
   margin-top: 30px;
   margin-left: 10px;
 }
 
 .title {
-  font-size: 16px;
-  text-transform: uppercase;
-  letter-spacing: 12px;
+  @mixin font title;
   color: $light-gray-3;
   text-align: center;
   margin-top: 30px;
@@ -30,7 +26,7 @@
   width: 300px;
   font-size: 18px;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 30px;
 
   .instruction {

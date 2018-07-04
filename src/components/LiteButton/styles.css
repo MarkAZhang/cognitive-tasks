@@ -1,0 +1,10 @@
+@import 'vars.css';
+
+.liteButton {
+  @mixin font button;
+  cursor: pointer;
+
+  &:hover {
+    color: $green;
+  }
+}
