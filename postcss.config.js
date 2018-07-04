@@ -1,5 +1,5 @@
 var path = require('path')
-var STYLES_DIR = path.resolve(__dirname, 'src/styles')
+var STYLES_DIR = path.resolve(__dirname, 'frontend/styles')
 
 module.exports = {
   plugins: [

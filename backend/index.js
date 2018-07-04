@@ -1,8 +1,9 @@
-var express = require('express')
-var path = require('path')
-var bodyParser = require('body-parser')
+import express from 'express'
+import path from 'path'
+import bodyParser from 'body-parser'
+import 'babel-polyfill'
 
-var { getOrCreate } = require('./server')
+import { getOrCreate } from './endpoints'
 
 var app = express()
 
@@ -11,7 +12,7 @@ const PATH_DIST = path.resolve(__dirname, 'dist');
 app.use(bodyParser.json())       // to support JSON-encoded bodies
 app.use('/static', express.static(PATH_DIST))
 
-app.get('/*', function (req, res) {
+app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'index.html'));
 })
 
