@@ -39,7 +39,6 @@ export default class InstructionState extends Component {
   }
 
   render() {
-    console.log('user data', this.props.taskData)
     return (
       <div className={cs.titleState}>
         <div className={cs.levelDisplay}>Level {this.props.taskData.n}</div>

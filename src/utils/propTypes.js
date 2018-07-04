@@ -8,6 +8,7 @@ const taskData = PropTypes.shape({
   currentSession: PropTypes.shape({
     startTime: PropTypes.instanceOf(Date),
     endTime: PropTypes.instanceOf(Date),
+    type: PropTypes.oneOf(['nback']),
     actions: PropTypes.arrayOf(PropTypes.shape({
       type: PropTypes.oneOf(['answer', 'click']).isRequired,
       timestamp: PropTypes.instanceOf(Date).isRequired,

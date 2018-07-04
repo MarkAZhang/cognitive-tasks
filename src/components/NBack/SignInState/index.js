@@ -1,6 +1,7 @@
 import { Component } from 'react'
 
 import PropTypes from '~/utils/propTypes'
+import { userSignIn } from '~/utils/endpoints'
 
 import { LiteButton } from '~/components'
 
@@ -8,24 +9,37 @@ import cs from './styles.css'
 
 export default class SignInState extends Component {
   state = {
-    id: '',
+    awsId: '',
     stage: 0,
   }
 
   onContinue = () => {
     if (this.state.stage == 0) {
       this.setState({
-        stage: 1
+        stage: 1,
       })
     } else {
-      this.props.setTaskData('userMetadata.id', this.state.id)
+      const userMetadata = {
+        awsId: this.state.awsId,
+      }
+      this.props.updateTaskData({
+        userMetadata,
+      })
+      userSignIn(userMetadata).then(data => {
+        this.props.updateTaskData({
+          userMetadata: {
+            serverId: data.userId,
+            awsId: this.state.awsId,
+          },
+        })
+      })
       this.props.switchState('instruction')
     }
   }
 
   onChange = event => {
     this.setState({
-      id: event.target.value,
+      awsId: event.target.value,
     })
   }
 
@@ -55,7 +69,7 @@ export default class SignInState extends Component {
               To begin, please enter your AWS ID.
             </div>
             <div className={cs.inputContainer}>
-              <input className={cs.input} type='text' onChange={this.onChange} value={this.state.id} />
+              <input className={cs.input} type='text' onChange={this.onChange} value={this.state.awsId} />
             </div>
           </div>
         }
@@ -69,6 +83,6 @@ export default class SignInState extends Component {
 
 SignInState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  setTaskData: PropTypes.func.isRequired,
+  updateTaskData: PropTypes.func.isRequired,
   taskData: PropTypes.taskData,
 }

@@ -11,6 +11,7 @@ export default class TitleState extends Component {
     this.props.updateTaskData({
       n: 1,
       currentSession: {
+        type: 'nback',
         startTime: new Date,
         endTime: null,
         actions: [],
@@ -19,7 +20,7 @@ export default class TitleState extends Component {
   }
 
   onContinue = () => {
-    if (this.props.taskData.userMetadata.id === null) {
+    if (this.props.taskData.userMetadata.awsId === null) {
       this.props.switchState('signin')
     } else {
       this.props.switchState('instruction')

@@ -25,7 +25,8 @@ class NBack extends Component {
           startTaskData={{
             n: 1,
             userMetadata: {
-              id: null,
+              awsId: null,
+              serverId: null, /* AWS-assigned numeric ID */
             },
             currentSession: {},
           }}
