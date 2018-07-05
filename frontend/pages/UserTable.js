@@ -34,7 +34,10 @@ class UserTable extends Component {
 
   render() {
     return (
-      <BasicDataTable data={this.state.userData} columns={COLUMNS} className={cs.userTable} />
+      <div>
+        <div className={cs.csvMsg}>CSV Download coming soon...</div>
+        <BasicDataTable data={this.state.userData} columns={COLUMNS} className={cs.userTable} />
+      </div>
     )
   }
 }

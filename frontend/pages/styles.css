@@ -7,3 +7,7 @@
 .userTable {
   max-width: 800px;
 }
+
+.csvMsg {
+  margin: 20px;
+}
