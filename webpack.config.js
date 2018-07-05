@@ -5,12 +5,12 @@ var BUILD_DIR = path.resolve(__dirname, 'frontend-dist');
 var APP_DIR = path.resolve(__dirname, 'frontend');
 
 var config = {
+  mode: 'development',
   entry: ['babel-polyfill', APP_DIR + '/index.js'],
   output: {
     path: BUILD_DIR,
     filename: 'app.js'
   },
-  devtool: 'cheap-eval-source-map',
   resolve: {
     alias: {
       '~': APP_DIR

@@ -1,4 +1,5 @@
 import Datastore from '@google-cloud/datastore'
+import { map, mapValues, groupBy } from 'lodash/fp'
 
 const projectId = 'cognitive-tasks'
 
@@ -33,6 +34,36 @@ const logNewSession = async (userServerId, session) => {
   await datastore.insert(entity)
 
   return key.id
+}
+
+const formatUser = user => ({
+  serverId: user[Datastore.KEY].id,
+  awsId: user.awsId,
+})
+
+const fetchUsers = async () => {
+
+  const query = datastore
+      .createQuery('User')
+
+  const response = await datastore.runQuery(query)
+
+  return map(formatUser, response[0])
+}
+
+const formatTestSession = session => ({
+  serverId: session[Datastore.KEY].id,
+  userId: session.userId,
+})
+
+const fetchTestSessions = async () => {
+
+  const query = datastore
+      .createQuery('TestSession')
+
+  const response = await datastore.runQuery(query)
+
+  return map(formatTestSession, response[0])
 }
 
 const getOrCreate = async (req, res) => {
@@ -72,7 +103,25 @@ const logUserSession = async (req, res) => {
   })
 }
 
+const getAllUsers = async (req, res) => {
+  let userData = await fetchUsers()
+
+  const testSessionData = await fetchTestSessions()
+
+  const counts = mapValues(sessions => sessions.length, groupBy('userId', testSessionData))
+
+  userData = userData.map(data => ({
+    ...data,
+    numSessions: counts[data.serverId] || 0,
+  }))
+
+  res.json({
+    users: userData,
+  })
+}
+
 module.exports = {
   getOrCreate,
   logUserSession,
+  getAllUsers,
 }

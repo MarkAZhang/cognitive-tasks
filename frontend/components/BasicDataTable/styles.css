@@ -1,0 +1,39 @@
+@import 'vars.css';
+
+.table {
+  margin: 20px;
+
+  .row {
+    @mixin flex right, center, center;
+  }
+
+  .cell {
+    @mixin flex right, center;
+    flex: 1 1 0;
+    border-left: 1px solid $dark-gray-border;
+    border-top: 1px solid $dark-gray-border;
+    height: 40px;
+    padding: 10px;
+  }
+
+  .row:last-child .cell {
+    border-bottom: 1px solid $dark-gray-border;
+  }
+
+  .cell:last-child {
+    border-right: 1px solid $dark-gray-border;
+  }
+
+  .row:nth-child(2n) {
+    background-color: $off-white;
+  }
+
+  .header {
+    font-weight: bold;
+  }
+}
+
+.loadingMsg {
+  padding: 20px;
+  font-size: 24px;
+}
