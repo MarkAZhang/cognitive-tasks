@@ -9,11 +9,11 @@ export const logUserSession = (userServerId, session) =>
   })
 
 export const getAllUsers = async () => {
-  const res = await request.get('user/all')
+  const res = await request.getWithAuthPrompt('user/all')
   return res.users
 }
 
 export const getAllTestSessions = async () => {
-  const res = await request.get('testsessions/all')
+  const res = await request.getWithAuthPrompt('testsessions/all')
   return res.testSessions
 }

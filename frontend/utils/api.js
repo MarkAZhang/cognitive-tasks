@@ -36,6 +36,9 @@ const doRequest = async (url: string, params: RequestOptions) => {
     // TODO(mark): Better error messages.
     throw new Error('Error on api response')
   }
+  if (response.status === 401) {
+    throw new Error('401')
+  }
   return body
 }
 
@@ -60,4 +63,23 @@ const post = (url: string, data: { [string]: mixed }) => doRequest(url, {
   },
 })
 
-export const request = {get, post}
+const MAX_TRIES = 3
+
+const getWithAuthPrompt = async (baseUrl, data, tries = 0) => {
+  let response = {}
+
+  try {
+    response = await get(baseUrl, data,
+      { Authorization: `Basic ${sessionStorage.auth}` }
+    )
+  } catch (e) {
+    if (e.message === '401' && tries < MAX_TRIES) {
+      sessionStorage.setItem('auth', btoa(`${prompt('Please enter the password.')}`)); // eslint-disable-line
+      return getWithAuthPrompt(baseUrl, data, tries + 1)
+    }
+    throw e
+  }
+  return response
+}
+
+export const request = {get, post, getWithAuthPrompt}

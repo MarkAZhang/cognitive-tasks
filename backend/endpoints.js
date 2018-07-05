@@ -1,5 +1,7 @@
 import Datastore from '@google-cloud/datastore'
-import { map, mapValues, groupBy } from 'lodash/fp'
+import { map, mapValues, groupBy, split } from 'lodash/fp'
+
+import { PASSWORD } from '../server-password'
 
 const projectId = 'cognitive-tasks'
 
@@ -107,6 +109,12 @@ const logUserSession = async (req, res) => {
 }
 
 const getAllUsers = async (req, res) => {
+  const auth = split(' ', req.get('authorization'))
+
+  if (auth[1] !== PASSWORD) {
+    return res.status(401).send("Authorization Required");
+  }
+
   let userData = await fetchUsers()
 
   const testSessionData = await fetchTestSessions()
@@ -124,6 +132,12 @@ const getAllUsers = async (req, res) => {
 }
 
 const getAllTestSessions = async (req, res) => {
+  const auth = split(' ', req.get('authorization'))
+
+  if (auth[1] !== PASSWORD) {
+    return res.status(401).send("Authorization Required");
+  }
+
   const testSessionData = await fetchTestSessions()
 
   res.json({
