@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 const taskData = PropTypes.shape({
   n: PropTypes.number,
   userMetadata: PropTypes.shape({
-    id: PropTypes.string,
+    serverId: PropTypes.string,
+    awsId: PropTypes.string,
   }),
   currentSession: PropTypes.shape({
     startTime: PropTypes.instanceOf(Date),

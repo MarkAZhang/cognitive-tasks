@@ -5,6 +5,7 @@ import { set, concat } from 'lodash/fp'
 import PropTypes from '~/utils/propTypes'
 import { Icon, LiteButton } from '~/components'
 import { generateShapes } from '~/utils/nback/shapes'
+import { logUserSession } from '~/utils/endpoints'
 import { calculateAccuracyForN, getCurrentNBreakdown } from '~/utils/nback/score'
 
 import { TEST_NUMBER, MAX_WRONG, MAX_CORRECT } from '../constants'
@@ -51,6 +52,10 @@ export default class LevelUpState extends Component {
       })
 
       // Send session to server.
+      logUserSession(
+        this.props.taskData.userMetadata.serverId,
+        currentSession,
+      )
     }
   }
 

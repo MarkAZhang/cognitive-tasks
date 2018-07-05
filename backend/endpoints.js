@@ -16,14 +16,30 @@ const createNewUser = async awsId => {
 
   await datastore.insert(entity)
 
-  return key
+  return key.id
+}
+
+const logNewSession = async (userServerId, session) => {
+  const key = datastore.key('TestSession')
+
+  const entity = {
+    key,
+    data: {
+      userId: userServerId,
+      ...session,
+    }
+  }
+
+  await datastore.insert(entity)
+
+  return key.id
 }
 
 const getOrCreate = async (req, res) => {
   if (!req.body.awsId) {
-    const userKey = await createNewUser()
+    const userId = await createNewUser()
     res.json({
-      userId: userKey.id,
+      userId,
       status: 'new',
     })
     return
@@ -39,15 +55,24 @@ const getOrCreate = async (req, res) => {
         status: 'existing',
       })
     } else {
-      const userKey = await createNewUser(req.body.awsId)
+      const userId = await createNewUser(req.body.awsId)
       res.json({
-        userId: userKey.id,
+        userId,
         status: 'new',
       })
     }
   }
 }
 
+const logUserSession = async (req, res) => {
+  const sessionId = await logNewSession(req.params.userServerId, req.body.session)
+  res.json({
+    status: 'success',
+    sessionId,
+  })
+}
+
 module.exports = {
   getOrCreate,
+  logUserSession,
 }
