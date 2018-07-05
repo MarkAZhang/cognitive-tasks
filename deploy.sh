@@ -1,4 +1,10 @@
 export PROJECT_ID="$(gcloud config get-value project -q)"
+echo 'Building front-end...'
+npm run build-prod
+
+echo 'Building back-end...'
+npm run build-server
+
 echo 'Building docker image...'
 docker build -t gcr.io/${PROJECT_ID}/my-app:latest .
 echo 'Pushing docker image...'

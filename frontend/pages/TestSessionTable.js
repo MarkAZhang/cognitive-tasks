@@ -15,6 +15,14 @@ const COLUMNS = [
     key: 'userId',
   },
   {
+    header: 'IP',
+    key: 'ip',
+  },
+  {
+    header: 'User Agent',
+    key: 'userAgent',
+  },
+  {
     header: 'Start Time',
     key: 'startTime',
   },

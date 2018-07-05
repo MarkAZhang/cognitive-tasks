@@ -44,13 +44,14 @@ export default class NBackState extends Component {
   select = yes => {
     let newActionEntry = null
     const newTime = new Date()
+    const msAdj = this.state.index === 0 ? 0 : 400
     if (this.state.index >= this.props.taskData.n) {
       const correctAnswer =  (this.state.testShapes[this.state.index] === this.state.testShapes[this.state.index - this.props.taskData.n])
 
       newActionEntry = {
         type: 'answer',
         timestamp: newTime,
-        ms: newTime.getTime() - this.state.lastTime,
+        ms: newTime.getTime() - this.state.lastTime - msAdj,
         shape: this.state.testShapes[this.state.index],
         userAnswer: yes ? 'yes': 'no',
         correctAnswer: correctAnswer ? 'yes' : 'no',
@@ -62,7 +63,7 @@ export default class NBackState extends Component {
       newActionEntry = {
         type: 'action',
         timestamp: newTime,
-        ms: newTime.getTime() - this.state.lastTime,
+        ms: newTime.getTime() - this.state.lastTime - msAdj,
         actionType: 'first_shapes',
         index: this.state.index,
         n: this.props.taskData.n,
