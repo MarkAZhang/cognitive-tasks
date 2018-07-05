@@ -6,14 +6,6 @@ import { Icon } from '~/components'
 import cs from './styles.css'
 
 export default class TitleState extends Component {
-  componentWillMount() {
-    // Reset data
-    this.props.updateTaskData({
-      n: 1,
-      currentSession: {},
-    })
-  }
-
   onContinue = () => {
     if (this.props.taskData.userMetadata.awsId === null) {
       this.props.switchState('signin')

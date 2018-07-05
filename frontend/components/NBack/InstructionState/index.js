@@ -37,7 +37,7 @@ export default class InstructionState extends Component {
   }
 
   componentWillMount() {
-    // Session starts on Level 1 instructions.
+    // Session starts on Stage 1 instructions.
     if (this.props.taskData.n === 1) {
       this.props.updateTaskData({
         // session starts on title screen
@@ -46,6 +46,7 @@ export default class InstructionState extends Component {
           startTime: new Date(),
           endTime: null,
           actions: [],
+          isPractice: this.props.taskData.isPractice ? 'yes' : 'no',
         }
       })
     }
@@ -69,9 +70,10 @@ export default class InstructionState extends Component {
   }
 
   render() {
+    const isPractice = this.props.taskData.isPractice
     return (
       <div className={cs.titleState}>
-        <div className={cs.levelDisplay}>Level {this.props.taskData.n}</div>
+        <div className={cs.levelDisplay}>Stage {this.props.taskData.n} {isPractice && '(Practice)'}</div>
         <div className={cs.instructions}>
           <div className={cs.instruction}>
             You will be shown a series of shapes.

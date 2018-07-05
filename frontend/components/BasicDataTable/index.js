@@ -2,6 +2,14 @@ import PropTypes from '~/utils/propTypes'
 import cx from 'classnames'
 
 import cs from './styles.css'
+import { isObject, isArray } from 'lodash/fp';
+
+const renderData = data => {
+  if (isObject(data) || isArray(data)) {
+    return JSON.stringify(data)
+  }
+  return data
+}
 
 const BasicDataTable = props => {
   if (!props.data) {
@@ -27,11 +35,11 @@ const BasicDataTable = props => {
         <div className={cs.row} key={index}>
           {props.columns.map(column =>
             <div
-              className={cs.cell}
+              className={cx(cs.cell, props.tall && cs.tall)}
               style={column.grow && {flexGrow: column.grow}}
               key={column.key}
             >
-              {datum[column.key]}
+              {renderData(datum[column.key])}
             </div>
           )}
         </div>
@@ -47,6 +55,7 @@ BasicDataTable.propTypes = {
   })),
   data: PropTypes.arrayOf(PropTypes.any),
   className: PropTypes.string,
+  tall: PropTypes.bool,
 }
 
 export default BasicDataTable

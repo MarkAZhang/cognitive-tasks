@@ -41,7 +41,7 @@ export default class InstructionState extends Component {
   render() {
     return (
       <div className={cs.titleState}>
-        <div className={cs.levelDisplay}>Level {this.props.taskData.n}</div>
+        <div className={cs.levelDisplay}>Stage {this.props.taskData.n}</div>
         <div className={cs.instructions}>
           <div className={cs.instruction}>
             {this.props.taskData.n === 1

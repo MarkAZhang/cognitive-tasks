@@ -75,9 +75,10 @@ export default class NBackState extends Component {
   }
 
   render() {
+    const isPractice = this.props.taskData.isPractice
     return (
       <div className={cs.titleState}>
-        <div className={cs.levelDisplay}>Level {this.props.taskData.n}</div>
+        <div className={cs.levelDisplay}>Stage {this.props.taskData.n} {isPractice && '(Practice)'}</div>
         <div className={cs.currentShapeContainer}>
           <TransitionGroup className={cs.animationGroup}>
             <CSSTransition

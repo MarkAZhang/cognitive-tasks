@@ -13,12 +13,17 @@ export default class SignInState extends Component {
     stage: 0,
   }
 
-  onContinue = () => {
-    if (this.state.stage == 0) {
+  componentWillMount() {
+    if (this.props.taskData.userMetadata.awsId !== null) {
       this.setState({
-        stage: 1,
+        stage: 2,
       })
-    } else {
+    }
+  }
+
+  onContinue = () => {
+    if (this.state.stage === 1) {
+      // Sign user in.
       const userMetadata = {
         awsId: this.state.awsId,
       }
@@ -33,8 +38,24 @@ export default class SignInState extends Component {
           },
         })
       })
-      this.props.switchState('instruction')
     }
+
+    if (this.state.stage < 2) {
+      this.setState({
+        stage: this.state.stage + 1,
+      })
+    }
+  }
+
+  onPractice = () => {
+    this.props.updateTaskData({
+      isPractice: true,
+    })
+    this.onStart()
+  }
+
+  onStart = () => {
+    this.props.switchState('instruction')
   }
 
   onChange = event => {
@@ -46,7 +67,7 @@ export default class SignInState extends Component {
   render() {
     return (
       <div className={cs.signInState}>
-        <div className={cs.title}>Welcome</div>
+        {this.state.stage === 0 && <div className={cs.title}>Welcome</div>}
         {this.state.stage === 0 &&
           <div>
             <div className={cs.instruction}>
@@ -65,6 +86,7 @@ export default class SignInState extends Component {
             <div className={cs.instruction}>
               After each stage, we will give you feedback on your performance.
             </div>
+            <div className={cs.br} />
             <div className={cs.instruction}>
               To begin, please enter your AWS ID.
             </div>
@@ -73,9 +95,31 @@ export default class SignInState extends Component {
             </div>
           </div>
         }
-        <div className={cs.buttonContainer}>
-          <LiteButton onClick={this.onContinue}>Continue</LiteButton>
-        </div>
+        {this.state.stage === 2 &&
+          <div>
+            <div className={cs.instruction}>
+              If you like, you can take a practice test first.
+            </div>
+            <div className={cs.instruction}>
+              This is the same as the official test, but your session will be marked as 'practice'.
+            </div>
+            <div className={cs.buttonContainer}>
+              <LiteButton onClick={this.onPractice}>Practice</LiteButton>
+            </div>
+            <div className={cs.br} />
+            <div className={cs.instruction}>
+              Or if you feel ready, you can take the official test.
+            </div>
+            <div className={cs.buttonContainer}>
+              <LiteButton onClick={this.onStart}>Start</LiteButton>
+            </div>
+          </div>
+        }
+        {this.state.stage < 2 &&
+          <div className={cs.bottomButtonContainer}>
+            <LiteButton onClick={this.onContinue}>Continue</LiteButton>
+          </div>
+        }
       </div>
     )
   }

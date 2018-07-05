@@ -52,14 +52,17 @@ const fetchUsers = async () => {
 }
 
 const formatTestSession = session => ({
+  ...session,
   serverId: session[Datastore.KEY].id,
-  userId: session.userId,
 })
 
 const fetchTestSessions = async () => {
 
   const query = datastore
       .createQuery('TestSession')
+      .order('startTime', {
+        descending: true,
+      });
 
   const response = await datastore.runQuery(query)
 
@@ -120,8 +123,17 @@ const getAllUsers = async (req, res) => {
   })
 }
 
+const getAllTestSessions = async (req, res) => {
+  const testSessionData = await fetchTestSessions()
+
+  res.json({
+    testSessions: testSessionData,
+  })
+}
+
 module.exports = {
   getOrCreate,
   logUserSession,
   getAllUsers,
+  getAllTestSessions,
 }

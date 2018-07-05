@@ -68,7 +68,7 @@ export default class CoreTaskState extends Component {
     const entryComplete = this.state.enterDigitMode && this.state.index === -1
     return (
       <div>
-        <div className={cs.levelDisplay}>Level {this.props.taskData.n}</div>
+        <div className={cs.levelDisplay}>Stage {this.props.taskData.n}</div>
         <TransitionGroup className={cs.digitAnimationGroup}>
           {!this.state.enterDigitMode &&
             <CSSTransition

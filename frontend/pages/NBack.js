@@ -29,6 +29,7 @@ class NBack extends Component {
               serverId: null, /* AWS-assigned numeric ID */
             },
             currentSession: {},
+            isPractice: false,
           }}
         />
       </div>

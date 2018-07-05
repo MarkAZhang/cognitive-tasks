@@ -94,12 +94,26 @@ export default class LevelUpState extends Component {
         )
         this.props.switchState('instruction')
       } else {
-        this.props.switchState('title')
+        const isPractice = this.props.taskData.isPractice
+        // Reset data
+        this.props.updateTaskData({
+          n: 1,
+          currentSession: {},
+          isPractice: false,
+        })
+
+        if (this.props.taskData.isPractice) {
+          this.props.switchState('signin')
+        } else {
+          this.props.switchState('title')
+        }
       }
     }
   }
 
   render() {
+    const isPractice = this.props.taskData.isPractice
+
     return (
       <div className={cs.levelUpState}>
         {this.state.stage === 0 &&
@@ -120,7 +134,7 @@ export default class LevelUpState extends Component {
             The test will now get harder.
           </div>
         }
-        {this.state.stage === 1 && !this.state.nextStage &&
+        {this.state.stage === 1 && !this.state.nextStage && !isPractice &&
           <div className={cs.endOfTest}>
             <div className={cs.instruction}>
               This concludes the test.
@@ -130,9 +144,19 @@ export default class LevelUpState extends Component {
             </div>
           </div>
         }
+        {this.state.stage === 1 && !this.state.nextStage && isPractice &&
+          <div className={cs.endOfTest}>
+            <div className={cs.instruction}>
+              This concludes the practice session.
+            </div>
+          </div>
+        }
         <div className={cs.startContainer}>
           <LiteButton className={cs.startButton} onClick={this.onStart}>
-            {this.state.stage === 1 && !this.state.nextStage ? 'Back to Title' : 'Continue'}
+            {this.state.stage === 1 && !this.state.nextStage && !isPractice
+               ? 'Back to Title'
+               : 'Continue'
+            }
           </LiteButton>
         </div>
       </div>

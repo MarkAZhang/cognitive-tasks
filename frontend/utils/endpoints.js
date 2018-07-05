@@ -12,3 +12,8 @@ export const getAllUsers = async () => {
   const res = await request.get('user/all')
   return res.users
 }
+
+export const getAllTestSessions = async () => {
+  const res = await request.get('testsessions/all')
+  return res.testSessions
+}

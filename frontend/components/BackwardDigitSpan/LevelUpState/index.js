@@ -26,7 +26,7 @@ export default class LevelUpState extends Component {
   render() {
     return (
       <div className={cs.levelUpState}>
-        <div className={cs.levelDisplay}>Level {this.props.taskData.n - 1}</div>
+        <div className={cs.levelDisplay}>Stage {this.props.taskData.n - 1}</div>
         <div className={cs.label}>
           Let's change it up a bit...
         </div>

@@ -3,6 +3,8 @@
 .liteButton {
   @mixin font button;
   cursor: pointer;
+  margin-left: 12px;
+  display: inline-block;
 
   &:hover {
     color: $green;
