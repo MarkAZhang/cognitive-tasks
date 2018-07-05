@@ -20,6 +20,7 @@ export default class NBackState extends Component {
   state = {
     testShapes: generateShapes(this.props.taskData.n, TEST_NUMBER),
     index: 0,
+    lastTime: (new Date()).getTime(),
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,29 +36,41 @@ export default class NBackState extends Component {
     }
 
     this.setState({
-      index: breakdown.currentNAnswers.length,
+      index: breakdown.currentNAnswers.length + breakdown.firstShapeAnswers.length,
+      lastTime: (new Date()).getTime(),
     })
   }
 
   select = yes => {
-    let correctAnswer = false
-
+    let newActionEntry = null
+    const newTime = new Date()
     if (this.state.index >= this.props.taskData.n) {
-      correctAnswer =  (this.state.testShapes[this.state.index] === this.state.testShapes[this.state.index - this.props.taskData.n])
-    }
+      const correctAnswer =  (this.state.testShapes[this.state.index] === this.state.testShapes[this.state.index - this.props.taskData.n])
 
-    const newAnswerEntry = {
-      type: 'answer',
-      timestamp: new Date(),
-      shape: this.state.testShapes[this.state.index],
-      userAnswer: yes ? 'yes': 'no',
-      correctAnswer: correctAnswer ? 'yes' : 'no',
-      n: this.props.taskData.n,
-      index: this.state.index,
+      newActionEntry = {
+        type: 'answer',
+        timestamp: newTime,
+        ms: newTime.getTime() - this.state.lastTime,
+        shape: this.state.testShapes[this.state.index],
+        userAnswer: yes ? 'yes': 'no',
+        correctAnswer: correctAnswer ? 'yes' : 'no',
+        userWasCorrect: yes === correctAnswer ? 'yes' : 'no',
+        n: this.props.taskData.n,
+        index: this.state.index,
+      }
+    } else {
+      newActionEntry = {
+        type: 'action',
+        timestamp: newTime,
+        ms: newTime.getTime() - this.state.lastTime,
+        actionType: 'first_shapes',
+        index: this.state.index,
+        n: this.props.taskData.n,
+      }
     }
 
     this.props.setTaskData('currentSession.actions',
-      concat(this.props.taskData.currentSession.actions, newAnswerEntry),
+      concat(this.props.taskData.currentSession.actions, newActionEntry),
     )
   }
 

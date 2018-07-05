@@ -3,6 +3,9 @@ import { filter } from 'lodash/fp'
 const getCurrentNAnswers = (actions, n) =>
   filter(o => o.type === 'answer' && o.n === n, actions)
 
+const getFirstShapeActions = (actions, n) =>
+  filter(o => o.type === 'action' && o.actionType === 'first_shapes' && o.n === n, actions)
+
 const getScorableAnswers = answers =>
   filter(o => o.index >= o.n, answers)
 
@@ -31,6 +34,7 @@ export const getCurrentNBreakdown = (userAnswers, n) => {
     currentNAnswers,
     scorableAnswers,
     wrongAnswers: getWrongAnswers(scorableAnswers),
+    firstShapeAnswers: getFirstShapeActions(userAnswers, n),
     correctPositiveAnswers: getCorrectPositiveAnswers(scorableAnswers),
   }
 }

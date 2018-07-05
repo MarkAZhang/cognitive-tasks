@@ -1,5 +1,6 @@
 import cx from 'classnames'
 import { Component } from 'react'
+import { set, concat } from 'lodash/fp'
 
 import PropTypes from '~/utils/propTypes'
 import { Icon, LiteButton } from '~/components'
@@ -15,6 +16,7 @@ export default class LevelUpState extends Component {
   state = {
     stage: 0,
     nextStage: false,
+    lastTime: (new Date()).getTime(),
     acc: null,
   }
 
@@ -39,16 +41,52 @@ export default class LevelUpState extends Component {
       this.setState({
         nextStage,
       })
+    } else {
+      const currentSession = set('endTime', new Date,
+        this.props.taskData.currentSession
+      )
+
+      this.props.updateTaskData({
+        currentSession,
+      })
+
+      // Send session to server.
     }
   }
 
   onStart = () => {
     if (this.state.stage === 0) {
+      const newTime = new Date()
       this.setState({
         stage: 1,
+        lastTime: newTime.getTime(),
       })
+
+      const newActionEntry = {
+        type: 'action',
+        timestamp: newTime,
+        ms: newTime.getTime() - this.state.lastTime,
+        actionType: 'feedback',
+        n: this.props.taskData.n - 1,
+      }
+
+      this.props.setTaskData('currentSession.actions',
+        concat(this.props.taskData.currentSession.actions, newActionEntry),
+      )
     } else {
       if (this.state.nextStage) {
+        const newTime = new Date()
+        const newActionEntry = {
+          type: 'action',
+          timestamp: newTime,
+          ms: newTime.getTime() - this.state.lastTime,
+          actionType: 'getting_harder',
+          n: this.props.taskData.n - 1,
+        }
+
+        this.props.setTaskData('currentSession.actions',
+          concat(this.props.taskData.currentSession.actions, newActionEntry),
+        )
         this.props.switchState('instruction')
       } else {
         this.props.switchState('title')

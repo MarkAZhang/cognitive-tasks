@@ -10,12 +10,7 @@ export default class TitleState extends Component {
     // Reset data
     this.props.updateTaskData({
       n: 1,
-      currentSession: {
-        type: 'nback',
-        startTime: new Date,
-        endTime: null,
-        actions: [],
-      }
+      currentSession: {},
     })
   }
 

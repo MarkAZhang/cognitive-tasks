@@ -1,5 +1,6 @@
 import cx from 'classnames'
 import { Component } from 'react'
+import { concat } from 'lodash/fp'
 
 import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
@@ -32,9 +33,38 @@ ExampleBlock.propTypes = {
 export default class InstructionState extends Component {
   state = {
     exampleShapes: generateShapes(this.props.taskData.n, EXAMPLE_NUMBER, true),
+    lastTime: (new Date()).getTime(),
+  }
+
+  componentWillMount() {
+    // Session starts on Level 1 instructions.
+    if (this.props.taskData.n === 1) {
+      this.props.updateTaskData({
+        // session starts on title screen
+        currentSession: {
+          type: 'nback',
+          startTime: new Date(),
+          endTime: null,
+          actions: [],
+        }
+      })
+    }
   }
 
   onStart = () => {
+    const newTime = new Date()
+    const newActionEntry = {
+      type: 'action',
+      timestamp: newTime,
+      ms: newTime.getTime() - this.state.lastTime,
+      actionType: 'instructions',
+      n: this.props.taskData.n,
+    }
+
+    this.props.setTaskData('currentSession.actions',
+      concat(this.props.taskData.currentSession.actions, newActionEntry),
+    )
+
     this.props.switchState('nback')
   }
 
