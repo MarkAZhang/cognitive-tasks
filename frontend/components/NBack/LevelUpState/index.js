@@ -42,15 +42,23 @@ export default class LevelUpState extends Component {
     const isPractice = this.props.taskVars.isPractice
 
     if (this.state.stage === 0) {
-      this.setState({
-        stage: 1,
-      })
 
       if (!this.state.gameOver) {
         const newActionEntry = ActionManager.getActionEntry('action', {
-          actionType: 'feedback',
+          actionType: 'end_of_stage_feedback',
         })
         this.props.appendAction(newActionEntry)
+      }
+
+      if (isPractice) {
+        this.props.updateTaskVars({
+          isPractice: false,
+        })
+        this.props.switchState('instruction')
+      } else {
+        this.setState({
+          stage: 1,
+        })
       }
     } else {
       if (this.state.nextStage) {
@@ -60,15 +68,9 @@ export default class LevelUpState extends Component {
         })
       }
 
-      if (isPractice) {
-        this.props.updateTaskVars({
-          isPractice: false,
-        })
-      }
-
       if (!this.state.gameOver) {
         const newActionEntry = ActionManager.getActionEntry('action', {
-          actionType: isPractice ? 'practice_complete' : 'getting_harder',
+          actionType: 'getting_harder',
         })
         this.props.appendAction(newActionEntry)
 

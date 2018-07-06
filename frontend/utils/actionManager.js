@@ -7,13 +7,13 @@ class ActionManager {
     this.lastTime = new Date()
   }
 
-  getActionEntry = (type, metadata = {}) => {
+  getActionEntry = (type, metadata = {}, msAdj = 0) => {
     const newTime = new Date()
 
     const newActionEntry = {
       type,
       timestamp: newTime,
-      ms: newTime.getTime() - this.lastTime.getTime(),
+      ms: newTime.getTime() - this.lastTime.getTime() - msAdj,
       metadata,
     }
 

@@ -18,6 +18,12 @@ const fontStyles = {
     letterSpacing: 4,
     fontWeight: 700,
   },
+  highlight: {
+    fontSize: 15,
+    textTransform: 'uppercase',
+    letterSpacing: 4,
+    fontWeight: 700,
+  },
   input: {
     fontSize: 18,
   }

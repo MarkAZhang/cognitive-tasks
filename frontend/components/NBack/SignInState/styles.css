@@ -2,6 +2,7 @@
 
 .signInState {
   padding: 50px;
+  color: $dark-gray-2;
 }
 
 .title {

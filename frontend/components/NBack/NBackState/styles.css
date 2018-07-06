@@ -22,6 +22,7 @@
   @mixin flex right, center, center;
   margin-top: 50px;
   position: absolute;
+  width: 100%;
 
   .button {
     @mixin flex right, center, center;
@@ -68,6 +69,64 @@
   }
 }
 
+.feedbackControls {
+  margin-top: 30px;
+
+  .feedbackButton {
+    margin-right: 20px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.feedback {
+  text-align: center;
+
+  .text {
+    @mixin font instruction;
+    color: $dark-gray-2;
+    margin-top: 10px;
+  }
+
+  .boxIcon {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-right: 4px;
+  }
+
+  .correct {
+    @mixin font highlight;
+    color: $green;
+    margin-left: 4px;
+  }
+
+  .wrong {
+    @mixin font highlight;
+    color: $red;
+    margin-left: 4px;
+  }
+
+  .yes {
+    color: $green;
+  }
+
+  .no {
+    color: $red;
+  }
+}
+
+.endPractice {
+  @mixin flex down, center, center;
+  position: absolute;
+  bottom: 35px;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+}
+
 .animationGroup {
   position: relative;
   width: 160px;
@@ -99,7 +158,7 @@
 
 .controlsAnimationGroup {
   position: relative;
-  width: 150px;
+  width: 400px;
   height: 60px;
   margin: 0 auto;
 }

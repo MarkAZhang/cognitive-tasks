@@ -10,6 +10,15 @@
   color: $light-gray-2;
   padding-right: 12px;
 
+  &.bare {
+    background-color: transparent !important;
+    border: none !important;
+
+    &:hover {
+      color: $light-gray-3;
+    }
+  }
+
   &:hover {
     background-color: $gray-gradient-lite;
     color: $light-gray-3;

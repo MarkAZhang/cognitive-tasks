@@ -3,6 +3,9 @@ import { filter } from 'lodash/fp'
 const getFirstShapeActions = stage =>
   filter(action => action.type === 'action' && action.metadata.actionType === 'first_shapes' , stage.actions)
 
+const getInstantFeedbackActions = stage =>
+  filter(action => action.type === 'action' && action.metadata.actionType === 'instant_feedback' , stage.actions)
+
 const getScorableAnswers = stage =>
   filter(action => action.type === 'answer', stage.actions)
 
@@ -27,6 +30,7 @@ export const getAnswerBreakdown = (currentStage) => {
   return {
     scorableAnswers,
     firstShapeActions: getFirstShapeActions(currentStage),
+    instantFeedbackActions: getInstantFeedbackActions(currentStage),
     wrongAnswers: getWrongAnswers(scorableAnswers),
     correctPositiveAnswers: getCorrectPositiveAnswers(scorableAnswers),
   }
