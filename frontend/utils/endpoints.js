@@ -15,6 +15,6 @@ export const getAllUsers = async () => {
 }
 
 export const getAllTestSessions = async () => {
-  const res = await request.get('testsessions/all')
+  const res = await request.getWithAuthPrompt('testsessions/all')
   return res.testSessions
 }

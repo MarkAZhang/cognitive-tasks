@@ -2,7 +2,7 @@ import PropTypes from '~/utils/propTypes'
 import cx from 'classnames'
 
 import cs from './styles.css'
-import { isObject, isArray } from 'lodash/fp';
+import { sum, isObject, isArray } from 'lodash/fp';
 
 const renderData = data => {
   if (isObject(data) || isArray(data)) {
@@ -18,13 +18,15 @@ const BasicDataTable = props => {
     )
   }
 
+  const rowWidth = sum(props.columns.map(column => column.width || 200))
+
   return (
     <div className={cx(cs.table, props.className)}>
-      <div className={cs.row}>
+      <div className={cs.row} style={{width: rowWidth}}>
         {props.columns.map(column =>
           <div
             className={cx(cs.cell, cs.header)}
-            style={column.grow && { flexGrow: column.grow }}
+            style={{flexBasis: column.width || 200}}
             key={column.header}
           >
             {column.header}
@@ -32,11 +34,11 @@ const BasicDataTable = props => {
         )}
       </div>
       {props.data.map((datum, index) =>
-        <div className={cs.row} key={index}>
+        <div className={cs.row} style={{width: rowWidth}} key={index}>
           {props.columns.map(column =>
             <div
               className={cx(cs.cell, props.tall && cs.tall)}
-              style={column.grow && {flexGrow: column.grow}}
+              style={{flexBasis: column.width || 200}}
               key={column.key}
             >
               {renderData(datum[column.key])}
