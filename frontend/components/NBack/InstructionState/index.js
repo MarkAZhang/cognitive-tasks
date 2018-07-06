@@ -3,40 +3,22 @@ import { Component } from 'react'
 import { concat } from 'lodash/fp'
 
 import PropTypes from '~/utils/propTypes'
-import { Icon } from '~/components'
+import { Icon, LiteButton } from '~/components'
 import { generateShapes } from '~/utils/nback/shapes'
+import ActionManager from '~/utils/actionManager'
 
+import ExampleBlock from './ExampleBlock'
 import cs from './styles.css'
 
 const EXAMPLE_NUMBER = 8
 
-const ExampleBlock = ({ shapes, index, n }) =>
-  <div className={cs.exampleBlock}>
-    <div className={cs.index}>{index + 1}</div>
-    <Icon className={cs.shape} glyph={shapes[index]} />
-    <div className={cs.answer}>
-      {index >= n &&
-        (shapes[index] === shapes[index - n]
-          ? <Icon glyph='yes' className={cs.yesIcon} />
-          : <Icon glyph='no' className={cs.noIcon} />
-        )
-      }
-    </div>
-  </div>
-
-ExampleBlock.propTypes = {
-  shapes: PropTypes.arrayOf(PropTypes.string),
-  index: PropTypes.number,
-  n: PropTypes.number,
-}
-
 export default class InstructionState extends Component {
   state = {
     exampleShapes: generateShapes(this.props.taskData.n, EXAMPLE_NUMBER, true),
-    lastTime: (new Date()).getTime(),
   }
 
   componentWillMount() {
+    ActionManager.reset()
     // Session starts on Stage 1 instructions.
     if (this.props.taskData.n === 1) {
       this.props.updateTaskData({
@@ -46,21 +28,33 @@ export default class InstructionState extends Component {
           startTime: new Date(),
           endTime: null,
           actions: [],
-          isPractice: this.props.taskData.isPractice ? 'yes' : 'no',
         }
       })
     }
   }
 
-  onStart = () => {
-    const newTime = new Date()
-    const newActionEntry = {
-      type: 'action',
-      timestamp: newTime,
-      ms: newTime.getTime() - this.state.lastTime,
-      actionType: 'instructions',
+  onPractice = () => {
+    const newActionEntry = ActionManager.getActionEntry('action', {
+      actionType: 'instructions_practice',
       n: this.props.taskData.n,
-    }
+    })
+
+    this.props.setTaskData('currentSession.actions',
+      concat(this.props.taskData.currentSession.actions, newActionEntry),
+    )
+
+    this.props.updateTaskData({
+      isPractice: true,
+    })
+
+    this.props.switchState('nback')
+  }
+
+  onStart = () => {
+    const newActionEntry = ActionManager.getActionEntry('action', {
+      actionType: 'instructions_start_test',
+      n: this.props.taskData.n,
+    })
 
     this.props.setTaskData('currentSession.actions',
       concat(this.props.taskData.currentSession.actions, newActionEntry),
@@ -70,10 +64,9 @@ export default class InstructionState extends Component {
   }
 
   render() {
-    const isPractice = this.props.taskData.isPractice
     return (
       <div className={cs.titleState}>
-        <div className={cs.levelDisplay}>Stage {this.props.taskData.n} {isPractice && '(Practice)'}</div>
+        <div className={cs.levelDisplay}>Stage {this.props.taskData.n}</div>
         <div className={cs.instructions}>
           <div className={cs.instruction}>
             You will be shown a series of shapes.
@@ -104,8 +97,9 @@ export default class InstructionState extends Component {
             )}
           </div>
         }
-        <div className={cs.startContainer}>
-          <div className={cs.startButton} onClick={this.onStart}>Start</div>
+        <div className={cs.controls}>
+          <LiteButton className={cs.button} onClick={this.onPractice}>Practice</LiteButton>
+          <LiteButton className={cs.button} onClick={this.onStart}>Start Test</LiteButton>
         </div>
       </div>
     )

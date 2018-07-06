@@ -11,6 +11,7 @@ import { Icon } from '~/components'
 import { generateShapes } from '~/utils/nback/shapes'
 import { getCurrentNBreakdown } from '~/utils/nback/score'
 import getAnimationClassNames from '~/utils/animation'
+import ActionManager from '~/utils/actionManager'
 
 import { TEST_NUMBER, MAX_WRONG, MAX_CORRECT } from '../constants'
 
@@ -20,13 +21,14 @@ export default class NBackState extends Component {
   state = {
     testShapes: generateShapes(this.props.taskData.n, TEST_NUMBER),
     index: 0,
-    lastTime: (new Date()).getTime(),
   }
 
   componentWillReceiveProps(nextProps) {
     const breakdown = getCurrentNBreakdown(
       nextProps.taskData.currentSession.actions, nextProps.taskData.n
     )
+
+    console.log(nextProps.taskData.currentSession.actions, breakdown)
 
     if (breakdown.wrongAnswers.length >= MAX_WRONG ||
       breakdown.correctPositiveAnswers.length >= MAX_CORRECT
@@ -37,8 +39,8 @@ export default class NBackState extends Component {
 
     this.setState({
       index: breakdown.currentNAnswers.length + breakdown.firstShapeAnswers.length,
-      lastTime: (new Date()).getTime(),
     })
+    ActionManager.reset()
   }
 
   select = yes => {
@@ -48,26 +50,20 @@ export default class NBackState extends Component {
     if (this.state.index >= this.props.taskData.n) {
       const correctAnswer =  (this.state.testShapes[this.state.index] === this.state.testShapes[this.state.index - this.props.taskData.n])
 
-      newActionEntry = {
-        type: 'answer',
-        timestamp: newTime,
-        ms: newTime.getTime() - this.state.lastTime - msAdj,
+      newActionEntry = ActionManager.getActionEntry('answer', {
         shape: this.state.testShapes[this.state.index],
         userAnswer: yes ? 'yes': 'no',
         correctAnswer: correctAnswer ? 'yes' : 'no',
         userWasCorrect: yes === correctAnswer ? 'yes' : 'no',
         n: this.props.taskData.n,
         index: this.state.index,
-      }
+      })
     } else {
-      newActionEntry = {
-        type: 'action',
-        timestamp: newTime,
-        ms: newTime.getTime() - this.state.lastTime - msAdj,
+      newActionEntry = ActionManager.getActionEntry('action', {
         actionType: 'first_shapes',
         index: this.state.index,
         n: this.props.taskData.n,
-      }
+      })
     }
 
     this.props.setTaskData('currentSession.actions',

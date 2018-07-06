@@ -7,6 +7,7 @@ import { Icon, LiteButton } from '~/components'
 import { generateShapes } from '~/utils/nback/shapes'
 import { logUserSession } from '~/utils/endpoints'
 import { calculateAccuracyForN, getCurrentNBreakdown } from '~/utils/nback/score'
+import ActionManager from '~/utils/actionManager'
 
 import { TEST_NUMBER, MAX_WRONG, MAX_CORRECT } from '../constants'
 
@@ -17,11 +18,11 @@ export default class LevelUpState extends Component {
   state = {
     stage: 0,
     nextStage: false,
-    lastTime: (new Date()).getTime(),
     acc: null,
   }
 
   componentWillMount() {
+    ActionManager.reset()
     const breakdown = getCurrentNBreakdown(
       this.props.taskData.currentSession.actions, this.props.taskData.n
     )
@@ -42,7 +43,7 @@ export default class LevelUpState extends Component {
       this.setState({
         nextStage,
       })
-    } else {
+    } else if (!this.props.taskData.isPractice) {
       const currentSession = set('endTime', new Date,
         this.props.taskData.currentSession
       )
@@ -61,33 +62,24 @@ export default class LevelUpState extends Component {
 
   onStart = () => {
     if (this.state.stage === 0) {
-      const newTime = new Date()
       this.setState({
         stage: 1,
-        lastTime: newTime.getTime(),
       })
 
-      const newActionEntry = {
-        type: 'action',
-        timestamp: newTime,
-        ms: newTime.getTime() - this.state.lastTime,
+      const newActionEntry = ActionManager.getActionEntry('action', {
         actionType: 'feedback',
         n: this.props.taskData.n - 1,
-      }
+      })
 
       this.props.setTaskData('currentSession.actions',
         concat(this.props.taskData.currentSession.actions, newActionEntry),
       )
     } else {
       if (this.state.nextStage) {
-        const newTime = new Date()
-        const newActionEntry = {
-          type: 'action',
-          timestamp: newTime,
-          ms: newTime.getTime() - this.state.lastTime,
+        const newActionEntry = ActionManager.getActionEntry('action', {
           actionType: 'getting_harder',
           n: this.props.taskData.n - 1,
-        }
+        })
 
         this.props.setTaskData('currentSession.actions',
           concat(this.props.taskData.currentSession.actions, newActionEntry),
@@ -95,16 +87,19 @@ export default class LevelUpState extends Component {
         this.props.switchState('instruction')
       } else {
         const isPractice = this.props.taskData.isPractice
-        // Reset data
-        this.props.updateTaskData({
-          n: 1,
-          currentSession: {},
-          isPractice: false,
-        })
 
         if (this.props.taskData.isPractice) {
-          this.props.switchState('signin')
+          this.props.updateTaskData({
+            isPractice: false,
+          })
+          this.props.switchState('instruction')
         } else {
+          // Reset data
+          this.props.updateTaskData({
+            n: 1,
+            currentSession: {},
+            isPractice: false,
+          })
           this.props.switchState('title')
         }
       }

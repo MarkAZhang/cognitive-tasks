@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { Component } from 'react'
 
-import { Icon } from '~/components'
+import { Icon, LiteButton } from '~/components'
 
 import cs from './styles.css'
 
@@ -28,12 +28,7 @@ export default class TitleState extends Component {
           <Icon glyph='square' />
         </div>
         <div className={cs.startContainer}>
-          <div
-            className={cs.startButton}
-            onClick={this.onContinue}
-          >
-            Start
-          </div>
+          <LiteButton onClick={this.onContinue}>Start</LiteButton>
         </div>
       </div>
     )

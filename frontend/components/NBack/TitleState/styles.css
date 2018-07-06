@@ -41,16 +41,4 @@
   left: 0;
   right: 0;
   font-weight: bold;
-
-  .startButton {
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 12px;
-    margin-left: 10px;
-    cursor: pointer;
-
-    &:hover {
-      color: $green;
-    }
-  }
 }

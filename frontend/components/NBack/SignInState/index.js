@@ -13,14 +13,6 @@ export default class SignInState extends Component {
     stage: 0,
   }
 
-  componentWillMount() {
-    if (this.props.taskData.userMetadata.awsId !== null) {
-      this.setState({
-        stage: 2,
-      })
-    }
-  }
-
   onContinue = () => {
     if (this.state.stage === 1) {
       // Sign user in.
@@ -38,24 +30,14 @@ export default class SignInState extends Component {
           },
         })
       })
+      this.props.switchState('instruction')
     }
 
-    if (this.state.stage < 2) {
+    if (this.state.stage < 1) {
       this.setState({
         stage: this.state.stage + 1,
       })
     }
-  }
-
-  onPractice = () => {
-    this.props.updateTaskData({
-      isPractice: true,
-    })
-    this.onStart()
-  }
-
-  onStart = () => {
-    this.props.switchState('instruction')
   }
 
   onChange = event => {
@@ -95,31 +77,9 @@ export default class SignInState extends Component {
             </div>
           </div>
         }
-        {this.state.stage === 2 &&
-          <div>
-            <div className={cs.instruction}>
-              If you like, you can take a practice test first.
-            </div>
-            <div className={cs.instruction}>
-              This is the same as the official test, but your session will be marked as 'practice'.
-            </div>
-            <div className={cs.buttonContainer}>
-              <LiteButton onClick={this.onPractice}>Practice</LiteButton>
-            </div>
-            <div className={cs.br} />
-            <div className={cs.instruction}>
-              Or if you feel ready, you can take the official test.
-            </div>
-            <div className={cs.buttonContainer}>
-              <LiteButton onClick={this.onStart}>Start</LiteButton>
-            </div>
-          </div>
-        }
-        {this.state.stage < 2 &&
-          <div className={cs.bottomButtonContainer}>
-            <LiteButton onClick={this.onContinue}>Continue</LiteButton>
-          </div>
-        }
+        <div className={cs.bottomButtonContainer}>
+          <LiteButton onClick={this.onContinue}>Continue</LiteButton>
+        </div>
       </div>
     )
   }

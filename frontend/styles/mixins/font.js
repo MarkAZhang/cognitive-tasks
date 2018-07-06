@@ -13,9 +13,9 @@ const fontStyles = {
     fontSize: 18,
   },
   button: {
-    fontSize: 16,
+    fontSize: 14,
     textTransform: 'uppercase',
-    letterSpacing: 12,
+    letterSpacing: 4,
     fontWeight: 700,
   },
   input: {
