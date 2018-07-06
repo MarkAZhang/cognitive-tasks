@@ -9,7 +9,7 @@ import {
 import PropTypes from '~/utils/propTypes'
 import { Icon } from '~/components'
 import { generateShapes } from '~/utils/nback/shapes'
-import { getCurrentNBreakdown } from '~/utils/nback/score'
+import { getAnswerBreakdown } from '~/utils/nback/score'
 import getAnimationClassNames from '~/utils/animation'
 import ActionManager from '~/utils/actionManager'
 
@@ -19,16 +19,12 @@ import cs from './styles.css'
 
 export default class NBackState extends Component {
   state = {
-    testShapes: generateShapes(this.props.taskData.n, TEST_NUMBER),
+    testShapes: generateShapes(this.props.taskVars.n, TEST_NUMBER),
     index: 0,
   }
 
   componentWillReceiveProps(nextProps) {
-    const breakdown = getCurrentNBreakdown(
-      nextProps.taskData.currentSession.actions, nextProps.taskData.n
-    )
-
-    console.log(nextProps.taskData.currentSession.actions, breakdown)
+    const breakdown = getAnswerBreakdown(nextProps.currentStage)
 
     if (breakdown.wrongAnswers.length >= MAX_WRONG ||
       breakdown.correctPositiveAnswers.length >= MAX_CORRECT
@@ -38,44 +34,40 @@ export default class NBackState extends Component {
     }
 
     this.setState({
-      index: breakdown.currentNAnswers.length + breakdown.firstShapeAnswers.length,
+      index: breakdown.scorableAnswers.length + breakdown.firstShapeActions.length,
     })
     ActionManager.reset()
   }
 
   select = yes => {
     let newActionEntry = null
-    const newTime = new Date()
     const msAdj = this.state.index === 0 ? 0 : 400
-    if (this.state.index >= this.props.taskData.n) {
-      const correctAnswer =  (this.state.testShapes[this.state.index] === this.state.testShapes[this.state.index - this.props.taskData.n])
+
+    if (this.state.index >= this.props.taskVars.n) {
+      const correctAnswer =  (this.state.testShapes[this.state.index] === this.state.testShapes[this.state.index - this.props.taskVars.n])
 
       newActionEntry = ActionManager.getActionEntry('answer', {
         shape: this.state.testShapes[this.state.index],
         userAnswer: yes ? 'yes': 'no',
         correctAnswer: correctAnswer ? 'yes' : 'no',
         userWasCorrect: yes === correctAnswer ? 'yes' : 'no',
-        n: this.props.taskData.n,
         index: this.state.index,
       })
     } else {
       newActionEntry = ActionManager.getActionEntry('action', {
         actionType: 'first_shapes',
         index: this.state.index,
-        n: this.props.taskData.n,
       })
     }
 
-    this.props.setTaskData('currentSession.actions',
-      concat(this.props.taskData.currentSession.actions, newActionEntry),
-    )
+    this.props.appendAction(newActionEntry)
   }
 
   render() {
-    const isPractice = this.props.taskData.isPractice
+    const isPractice = this.props.taskVars.isPractice
     return (
       <div className={cs.titleState}>
-        <div className={cs.levelDisplay}>Stage {this.props.taskData.n} {isPractice && '(Practice)'}</div>
+        <div className={cs.levelDisplay}>Stage {this.props.taskVars.n} {isPractice && '(Practice)'}</div>
         <div className={cs.currentShapeContainer}>
           <TransitionGroup className={cs.animationGroup}>
             <CSSTransition
@@ -91,7 +83,7 @@ export default class NBackState extends Component {
           </TransitionGroup>
         </div>
         <TransitionGroup className={cs.controlsAnimationGroup}>
-          {this.state.index >= this.props.taskData.n
+          {this.state.index >= this.props.taskVars.n
             ? <CSSTransition
               key='normalControls'
               timeout={{
@@ -132,6 +124,7 @@ export default class NBackState extends Component {
 
 NBackState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  setTaskData: PropTypes.func.isRequired,
-  taskData: PropTypes.taskData,
+  appendAction: PropTypes.func.isRequired,
+  currentStage: PropTypes.stage,
+  taskVars: PropTypes.taskVars,
 }

@@ -1,40 +1,33 @@
 import { filter } from 'lodash/fp'
 
-const getCurrentNAnswers = (actions, n) =>
-  filter(o => o.type === 'answer' && o.n === n, actions)
+const getFirstShapeActions = stage =>
+  filter(action => action.type === 'action' && action.metadata.actionType === 'first_shapes' , stage.actions)
 
-const getFirstShapeActions = (actions, n) =>
-  filter(o => o.type === 'action' && o.actionType === 'first_shapes' && o.n === n, actions)
-
-const getScorableAnswers = answers =>
-  filter(o => o.index >= o.n, answers)
+const getScorableAnswers = stage =>
+  filter(action => action.type === 'answer', stage.actions)
 
 const getWrongAnswers = answers =>
-  filter(o => o.userAnswer !== o.correctAnswer, answers)
+  filter(ans => ans.metadata.userWasCorrect === 'no', answers)
 
 const getCorrectAnswers = answers =>
-  filter(o => o.userAnswer === o.correctAnswer, answers)
+  filter(ans => ans.metadata.userWasCorrect === 'yes', answers)
 
 const getCorrectPositiveAnswers = answers =>
-  filter(o => o.userAnswer === 'yes' && o.correctAnswer === 'yes', answers)
+  filter(ans => ans.metadata.userAnswer === 'yes' && ans.metadata.correctAnswer === 'yes', answers)
 
-export const calculateAccuracyForN = (userAnswers, n) => {
-  const currentNAnswers = getCurrentNAnswers(userAnswers, n)
-  const scorableAnswers = getScorableAnswers(currentNAnswers)
+export const calculateAnswerAccuracy = (currentStage) => {
+  const scorableAnswers = getScorableAnswers(currentStage)
 
   return getCorrectAnswers(scorableAnswers).length / scorableAnswers.length
 }
 
-export const getCurrentNBreakdown = (userAnswers, n) => {
-  const currentNAnswers = getCurrentNAnswers(userAnswers, n)
-
-  const scorableAnswers = getScorableAnswers(currentNAnswers)
+export const getAnswerBreakdown = (currentStage) => {
+  const scorableAnswers = getScorableAnswers(currentStage)
 
   return {
-    currentNAnswers,
     scorableAnswers,
+    firstShapeActions: getFirstShapeActions(currentStage),
     wrongAnswers: getWrongAnswers(scorableAnswers),
-    firstShapeAnswers: getFirstShapeActions(userAnswers, n),
     correctPositiveAnswers: getCorrectPositiveAnswers(scorableAnswers),
   }
 }

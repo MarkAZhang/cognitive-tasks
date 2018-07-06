@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types'
 import { Component } from 'react'
 
+import PropTypes from '~/utils/propTypes'
 import { Icon, LiteButton } from '~/components'
 
 import cs from './styles.css'
 
 export default class TitleState extends Component {
   onContinue = () => {
-    if (this.props.taskData.userMetadata.awsId === null) {
+    if (this.props.userMetadata.awsId === null) {
       this.props.switchState('signin')
     } else {
       this.props.switchState('instruction')
@@ -37,5 +37,5 @@ export default class TitleState extends Component {
 
 TitleState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  updateTaskData: PropTypes.func.isRequired,
+  userMetadata: PropTypes.userMetadata,
 }

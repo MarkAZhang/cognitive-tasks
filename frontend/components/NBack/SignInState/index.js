@@ -1,7 +1,6 @@
 import { Component } from 'react'
 
 import PropTypes from '~/utils/propTypes'
-import { userSignIn } from '~/utils/endpoints'
 
 import { LiteButton } from '~/components'
 
@@ -16,20 +15,8 @@ export default class SignInState extends Component {
   onContinue = () => {
     if (this.state.stage === 1) {
       // Sign user in.
-      const userMetadata = {
-        awsId: this.state.awsId,
-      }
-      this.props.updateTaskData({
-        userMetadata,
-      })
-      userSignIn(userMetadata).then(data => {
-        this.props.updateTaskData({
-          userMetadata: {
-            serverId: data.userId,
-            awsId: this.state.awsId,
-          },
-        })
-      })
+      this.props.setAwsId(this.state.awsId)
+
       this.props.switchState('instruction')
     }
 
@@ -87,6 +74,7 @@ export default class SignInState extends Component {
 
 SignInState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  updateTaskData: PropTypes.func.isRequired,
+  setServerId: PropTypes.func.isRequired,
+  setAwsId: PropTypes.func.isRequired,
   taskData: PropTypes.taskData,
 }

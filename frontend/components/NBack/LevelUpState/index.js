@@ -5,8 +5,7 @@ import { set, concat } from 'lodash/fp'
 import PropTypes from '~/utils/propTypes'
 import { Icon, LiteButton } from '~/components'
 import { generateShapes } from '~/utils/nback/shapes'
-import { logUserSession } from '~/utils/endpoints'
-import { calculateAccuracyForN, getCurrentNBreakdown } from '~/utils/nback/score'
+import { calculateAnswerAccuracy, getAnswerBreakdown } from '~/utils/nback/score'
 import ActionManager from '~/utils/actionManager'
 
 import { TEST_NUMBER, MAX_WRONG, MAX_CORRECT } from '../constants'
@@ -23,91 +22,67 @@ export default class LevelUpState extends Component {
 
   componentWillMount() {
     ActionManager.reset()
-    const breakdown = getCurrentNBreakdown(
-      this.props.taskData.currentSession.actions, this.props.taskData.n
-    )
+    const breakdown = getAnswerBreakdown(this.props.currentStage)
+
+    const nextStage = breakdown.correctPositiveAnswers.length >= MAX_CORRECT && !this.props.taskVars.isPractice
+    const gameOver = !nextStage && !this.props.taskVars.isPractice
 
     this.setState({
-      acc: parseInt(100 * calculateAccuracyForN(
-        this.props.taskData.currentSession.actions, this.props.taskData.n)
-      ),
+      acc: parseInt(100 * calculateAnswerAccuracy(this.props.currentStage)),
+      nextStage,
+      gameOver,
     })
 
-    const nextStage = breakdown.correctPositiveAnswers.length >= MAX_CORRECT
-
-    if (nextStage) {
-      // Increase n.
-      this.props.updateTaskData({
-        n: this.props.taskData.n + 1
-      })
-      this.setState({
-        nextStage,
-      })
-    } else if (!this.props.taskData.isPractice) {
-      const currentSession = set('endTime', new Date,
-        this.props.taskData.currentSession
-      )
-
-      this.props.updateTaskData({
-        currentSession,
-      })
-
-      // Send session to server.
-      logUserSession(
-        this.props.taskData.userMetadata.serverId,
-        currentSession,
-      )
+    if (gameOver) {
+      this.props.endSession()
     }
   }
 
   onStart = () => {
+    const isPractice = this.props.taskVars.isPractice
+
     if (this.state.stage === 0) {
       this.setState({
         stage: 1,
       })
 
-      const newActionEntry = ActionManager.getActionEntry('action', {
-        actionType: 'feedback',
-        n: this.props.taskData.n - 1,
-      })
-
-      this.props.setTaskData('currentSession.actions',
-        concat(this.props.taskData.currentSession.actions, newActionEntry),
-      )
+      if (!this.state.gameOver) {
+        const newActionEntry = ActionManager.getActionEntry('action', {
+          actionType: 'feedback',
+        })
+        this.props.appendAction(newActionEntry)
+      }
     } else {
       if (this.state.nextStage) {
-        const newActionEntry = ActionManager.getActionEntry('action', {
-          actionType: 'getting_harder',
-          n: this.props.taskData.n - 1,
+        // Increase n.
+        this.props.updateTaskVars({
+          n: this.props.taskVars.n + 1
         })
+      }
 
-        this.props.setTaskData('currentSession.actions',
-          concat(this.props.taskData.currentSession.actions, newActionEntry),
-        )
+      if (isPractice) {
+        this.props.updateTaskVars({
+          isPractice: false,
+        })
+      }
+
+      if (!this.state.gameOver) {
+        const newActionEntry = ActionManager.getActionEntry('action', {
+          actionType: isPractice ? 'practice_complete' : 'getting_harder',
+        })
+        this.props.appendAction(newActionEntry)
+
         this.props.switchState('instruction')
       } else {
-        const isPractice = this.props.taskData.isPractice
-
-        if (this.props.taskData.isPractice) {
-          this.props.updateTaskData({
-            isPractice: false,
-          })
-          this.props.switchState('instruction')
-        } else {
-          // Reset data
-          this.props.updateTaskData({
-            n: 1,
-            currentSession: {},
-            isPractice: false,
-          })
-          this.props.switchState('title')
-        }
+        // Reset data
+        this.props.reset()
+        this.props.switchState('title')
       }
     }
   }
 
   render() {
-    const isPractice = this.props.taskData.isPractice
+    const isPractice = this.props.taskVars.isPractice
 
     return (
       <div className={cs.levelUpState}>
@@ -161,6 +136,10 @@ export default class LevelUpState extends Component {
 
 LevelUpState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  updateTaskData: PropTypes.func.isRequired,
-  taskData: PropTypes.taskData,
+  updateTaskVars: PropTypes.func.isRequired,
+  endSession: PropTypes.func.isRequired,
+  appendAction: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+  taskVars: PropTypes.taskVars,
+  currentStage: PropTypes.stage,
 }

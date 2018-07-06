@@ -7,14 +7,14 @@ class ActionManager {
     this.lastTime = new Date()
   }
 
-  getActionEntry = (type, params = {}) => {
+  getActionEntry = (type, metadata = {}) => {
     const newTime = new Date()
 
     const newActionEntry = {
       type,
       timestamp: newTime,
       ms: newTime.getTime() - this.lastTime.getTime(),
-      ...params,
+      metadata,
     }
 
     this.lastTime = newTime

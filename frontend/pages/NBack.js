@@ -22,13 +22,8 @@ class NBack extends Component {
         <TaskEngine
           taskStates={taskStates}
           startState='title'
-          startTaskData={{
+          initialTaskVars={{
             n: 1,
-            userMetadata: {
-              awsId: null,
-              serverId: null, /* AWS-assigned numeric ID */
-            },
-            currentSession: {},
             isPractice: false,
           }}
         />
