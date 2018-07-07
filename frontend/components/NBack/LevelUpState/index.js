@@ -13,10 +13,10 @@ import { TEST_NUMBER, MAX_WRONG, MAX_CORRECT } from '../constants'
 import cs from './styles.css'
 
 export default class LevelUpState extends Component {
-  LevelUpState
   state = {
     stage: 0,
     nextStage: false,
+    gameOver: false,
     acc: null,
   }
 
@@ -40,9 +40,7 @@ export default class LevelUpState extends Component {
 
   onStart = () => {
     const isPractice = this.props.taskVars.isPractice
-
     if (this.state.stage === 0) {
-
       if (!this.state.gameOver) {
         const newActionEntry = ActionManager.getActionEntry('action', {
           actionType: 'end_of_stage_feedback',
@@ -113,13 +111,6 @@ export default class LevelUpState extends Component {
             </div>
             <div className={cs.instruction}>
               Thank you for your participation.
-            </div>
-          </div>
-        }
-        {this.state.stage === 1 && !this.state.nextStage && isPractice &&
-          <div className={cs.endOfTest}>
-            <div className={cs.instruction}>
-              This concludes the practice session.
             </div>
           </div>
         }

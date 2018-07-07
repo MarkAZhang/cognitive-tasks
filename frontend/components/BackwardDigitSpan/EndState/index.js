@@ -22,7 +22,7 @@ export default class EndState extends Component {
   render() {
     return (
       <div className={cs.endState}>
-        <div className={cs.levelDisplay}>Stage {this.props.taskData.n}</div>
+        <div className={cs.levelDisplay}>Stage {this.props.taskData.n - 1}</div>
         <div className={cs.label}>
           Thank you for taking the test.
         </div>

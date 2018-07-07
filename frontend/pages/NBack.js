@@ -2,7 +2,7 @@ import { Component } from 'react'
 
 import { TaskEngine } from '~/components'
 import {
-  TitleState, InstructionState, NBackState, EndState, LevelUpState, SignInState,
+  TitleState, InstructionState, CoreTaskState, EndState, LevelUpState, SignInState,
 } from '~/components/NBack'
 
 import cs from './styles.css'
@@ -10,7 +10,7 @@ import cs from './styles.css'
 const taskStates = {
   title: TitleState,
   instruction: InstructionState,
-  nback: NBackState,
+  core: CoreTaskState,
   levelup: LevelUpState,
   signin: SignInState,
 }

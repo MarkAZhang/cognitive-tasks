@@ -9,8 +9,10 @@ import cx from 'classnames'
 import getAnimationClassNames from '~/utils/animation'
 import PropTypes from '~/utils/propTypes'
 import { generateDigits } from '~/utils/digits/digits'
-import { Icon } from '~/components'
+import { Icon, LiteButton } from '~/components'
+import ActionManager from '~/utils/actionManager'
 
+import EnteredDigits from './EnteredDigits'
 import cs from './styles.css'
 
 const TOTAL_DIGIT_TIME = 1600
@@ -18,13 +20,23 @@ const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
 
 export default class CoreTaskState extends Component {
   state = {
-    testDigits: generateDigits(this.props.taskData.n),
+    testDigits: null,
     index: 0,
     enterDigitMode: false,
-    enteredDigits: range(0, this.props.taskData.n).map(() => null),
+    enteredDigits: null,
   }
 
   componentWillMount() {
+    this.reset()
+  }
+
+  reset = () => {
+    this.setState({
+      testDigits: generateDigits(this.props.taskVars.n),
+      index: 0,
+      enterDigitMode: false,
+      enteredDigits: range(0, this.props.taskVars.n).map(() => null),
+    })
     setTimeout(this.advanceDigit, TOTAL_DIGIT_TIME)
   }
 
@@ -39,6 +51,7 @@ export default class CoreTaskState extends Component {
       this.setState({
         enterDigitMode: true,
       })
+      ActionManager.reset()
     }
   }
 
@@ -46,6 +59,16 @@ export default class CoreTaskState extends Component {
     if (this.state.index < 0) {
       return
     }
+
+    const newActionEntry = ActionManager.getActionEntry('answer', {
+      userAnswer: digit,
+      correctAnswer: this.state.testDigits[this.state.index],
+      userWasCorrect: digit === this.state.testDigits[this.state.index] ? 'yes' : 'no',
+      index: this.state.index,
+    })
+
+    this.props.appendAction(newActionEntry)
+
     this.setState({
       enteredDigits: set(this.state.index, digit, this.state.enteredDigits),
       index: this.state.index - 1
@@ -53,22 +76,49 @@ export default class CoreTaskState extends Component {
   }
 
   onContinue = () => {
-    const anyWrong = some(Boolean, range(0, this.props.taskData.n).map(index =>
-      this.state.testDigits[index] !== this.state.enteredDigits[index]
-    ))
+    const newActionEntry = ActionManager.getActionEntry('action', {
+      actionType: 'confirm_feedback',
+      index: this.state.index,
+    })
 
-    if (anyWrong) {
-      this.props.switchState('end')
-    } else {
-      this.props.switchState('levelup')
-    }
+    this.props.appendAction(newActionEntry)
+
+    this.props.switchState('levelup')
+  }
+
+  repeatPractice = () => {
+    const newActionEntry = ActionManager.getActionEntry('action', {
+      actionType: 'repeat_practice',
+      index: this.state.index,
+    })
+    this.props.appendAction(newActionEntry)
+    this.props.startNewStage({
+      n: this.props.taskVars.n,
+      isPractice: true,
+    })
+    this.reset()
+  }
+
+  exitPractice = () => {
+    const newActionEntry = ActionManager.getActionEntry('action', {
+      actionType: 'exit_practice',
+      index: this.state.index,
+    })
+
+    this.props.updateTaskVars({
+      isPractice: false,
+    })
+
+    this.props.appendAction(newActionEntry)
+    this.props.switchState('instruction')
   }
 
   render() {
     const entryComplete = this.state.enterDigitMode && this.state.index === -1
+    const isPractice = this.props.taskVars.isPractice
     return (
       <div>
-        <div className={cs.levelDisplay}>Stage {this.props.taskData.n}</div>
+        <div className={cs.levelDisplay}>Stage {this.props.taskVars.n - 1} {isPractice && '(Practice)'}</div>
         <TransitionGroup className={cs.digitAnimationGroup}>
           {!this.state.enterDigitMode &&
             <CSSTransition
@@ -99,13 +149,7 @@ export default class CoreTaskState extends Component {
             >
               <div className={cs.answerAnimationGroup}>
                 {this.state.enterDigitMode &&
-                  <div className={cs.blanks}>
-                    {this.state.enteredDigits.map((i, index) =>
-                      <div className={cs.enteredDigit} key={index}>
-                        {i}
-                      </div>
-                    )}
-                  </div>
+                  <EnteredDigits className={cs.blanks} digits={this.state.enteredDigits} boldIndex={this.state.index} />
                 }
                 {entryComplete &&
                   <div className={cs.answers}>
@@ -122,7 +166,7 @@ export default class CoreTaskState extends Component {
                     )}
                   </div>
                 }
-                {this.state.enterDigitMode &&
+                {this.state.enterDigitMode && !entryComplete &&
                   <div className={cs.controls}>
                     {DIGITS.map(i =>
                       <div
@@ -135,11 +179,19 @@ export default class CoreTaskState extends Component {
                     )}
                   </div>
                 }
-                {entryComplete &&
-                  <div className={cs.startContainer}>
-                    <div className={cs.startButton} onClick={this.onContinue}>Continue</div>
-                  </div>
-                }
+                {entryComplete && (isPractice
+                  ? (
+                    <div className={cs.entryCompleteControls}>
+                      <LiteButton className={cs.button} onClick={this.exitPractice}>Exit Practice</LiteButton>
+                      <LiteButton className={cs.button} onClick={this.repeatPractice}>Try Again</LiteButton>
+                    </div>
+                  )
+                  : (
+                    <div className={cs.entryCompleteControls}>
+                      <LiteButton onClick={this.onContinue}>Continue</LiteButton>
+                    </div>
+                  )
+                )}
               </div>
             </CSSTransition>
           </TransitionGroup>
@@ -152,6 +204,8 @@ export default class CoreTaskState extends Component {
 
 CoreTaskState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  updateTaskData: PropTypes.func.isRequired,
-  taskData: PropTypes.taskData,
+  appendAction: PropTypes.func.isRequired,
+  currentStage: PropTypes.stage,
+  taskVars: PropTypes.taskVars,
+  startNewStage: PropTypes.func.isRequired,
 }

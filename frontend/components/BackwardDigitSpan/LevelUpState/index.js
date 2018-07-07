@@ -2,37 +2,83 @@ import cx from 'classnames'
 import { Component } from 'react'
 
 import PropTypes from '~/utils/propTypes'
-import { Icon } from '~/components'
-import { generateShapes } from '~/utils/nback/shapes'
-import { calculateAccuracyForN } from '~/utils/nback/score'
+import { Icon, LiteButton } from '~/components'
+import { wasAnswerCorrect } from '~/utils/digits/score'
+import ActionManager from '~/utils/actionManager'
 
 import cs from './styles.css'
 
 export default class LevelUpState extends Component {
-  LevelUpState
-  state = {}
-
-  componentWillMount() {
-    // Increase n.
-    this.props.updateTaskData({
-      n: this.props.taskData.n + 1
-    })
+  state = {
+    nextStage: false,
+    gameOver: false,
   }
 
+  componentWillMount() {
+    const answerCorrect = wasAnswerCorrect(this.props.currentStage)
+
+    const nextStage = answerCorrect
+    const gameOver = !answerCorrect
+
+    this.setState({
+      nextStage,
+      gameOver,
+    })
+
+    if (gameOver) {
+      this.props.endSession()
+    }
+  }
+
+
   onStart = () => {
-    this.props.switchState('instruction')
+    if (this.state.nextStage) {
+      // Increase n.
+      this.props.updateTaskVars({
+        n: this.props.taskVars.n + 1
+      })
+    }
+
+    if (!this.state.gameOver) {
+      const newActionEntry = ActionManager.getActionEntry('action', {
+        actionType: 'getting_harder',
+      })
+      this.props.appendAction(newActionEntry)
+
+      this.props.switchState('instruction')
+    } else {
+      // Reset data
+      this.props.reset()
+      this.props.switchState('title')
+    }
   }
 
   render() {
     return (
       <div className={cs.levelUpState}>
-        <div className={cs.levelDisplay}>Stage {this.props.taskData.n - 1}</div>
-        <div className={cs.label}>
-          Let's change it up a bit...
+      {this.state.nextStage &&
+        <div className={cs.nextStage}>
+          The test will now get harder.
         </div>
-        <div className={cs.startContainer}>
-          <div className={cs.startButton} onClick={this.onStart}>Continue</div>
+      }
+      {this.state.gameOver &&
+        <div className={cs.endOfTest}>
+          <div className={cs.instruction}>
+            This concludes the test.
+          </div>
+          <div className={cs.instruction}>
+            Thank you for your participation.
+          </div>
         </div>
+      }
+      <div className={cs.startContainer}>
+        <LiteButton className={cs.startButton} onClick={this.onStart}>
+          {this.state.gameOver
+             ? 'Back to Title'
+             : 'Continue'
+          }
+        </LiteButton>
+      </div>
       </div>
     )
   }
@@ -40,6 +86,10 @@ export default class LevelUpState extends Component {
 
 LevelUpState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  updateTaskData: PropTypes.func.isRequired,
-  taskData: PropTypes.taskData,
+  updateTaskVars: PropTypes.func.isRequired,
+  endSession: PropTypes.func.isRequired,
+  appendAction: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+  taskVars: PropTypes.taskVars,
+  currentStage: PropTypes.stage,
 }

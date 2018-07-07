@@ -1,18 +1,20 @@
-import PropTypes from 'prop-types'
 import { Component } from 'react'
 import cx from 'classnames'
 
-import { Icon } from '~/components'
+import { Icon, LiteButton } from '~/components'
+import PropTypes from '~/utils/propTypes'
+
+import EnteredDigits from '../CoreTaskState/EnteredDigits'
 
 import cs from './styles.css'
 
 export default class TitleState extends Component {
-  componentWillMount() {
-    // Reset data
-    this.props.updateTaskData({
-      n: 2,
-      userAnswers: []
-    })
+  onContinue = () => {
+    if (this.props.userMetadata.awsId === null) {
+      this.props.switchState('signin')
+    } else {
+      this.props.switchState('instruction')
+    }
   }
 
   render() {
@@ -23,29 +25,15 @@ export default class TitleState extends Component {
           <div className={cs.subtitle}>Cognitive Test</div>
         </div>
         <div className={cs.digits}>
-          <div className={cs.row}>
-            <div className={cs.digit}>9</div>
-            <div className={cs.digit}>8</div>
-            <div className={cs.digit}>7</div>
-          </div>
-          <div className={cs.rowTwo}>
-            <div className={cs.digit}>6</div>
-            <div className={cs.digit}>5</div>
-            <div className={cs.digit}>4</div>
-          </div>
-          <div className={cs.rowThree}>
-            <div className={cs.digit}>3</div>
-            <div className={cs.digit}>2</div>
-            <div className={cs.digit}>1</div>
-          </div>
+          <EnteredDigits className={cs.blanks} digits={[null, null, null, 1, 2, 5]} boldIndex={2} />
         </div>
         <div className={cs.startContainer}>
-          <div
+          <LiteButton
             className={cs.startButton}
-            onClick={() => this.props.switchState('instruction')}
+            onClick={this.onContinue}
           >
             Start
-          </div>
+          </LiteButton>
         </div>
       </div>
     )
@@ -54,5 +42,5 @@ export default class TitleState extends Component {
 
 TitleState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  updateTaskData: PropTypes.func.isRequired,
+  userMetadata: PropTypes.userMetadata,
 }

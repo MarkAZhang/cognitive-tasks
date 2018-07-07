@@ -37,7 +37,7 @@
 .startContainer {
   @mixin flex down, center, center;
   position: absolute;
-  bottom: 75px;
+  bottom: 100px;
   left: 0;
   right: 0;
   font-weight: bold;

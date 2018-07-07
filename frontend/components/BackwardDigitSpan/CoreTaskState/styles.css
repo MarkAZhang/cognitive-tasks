@@ -1,13 +1,12 @@
 @import 'vars.css';
 
 .levelDisplay {
-  font-size: 32px;
-  text-transform: uppercase;
-  letter-spacing: 12px;
+  @mixin font title;
+  color: $light-gray-2;
   color: $light-gray-2;
   text-align: center;
   margin-left: 10px;
-  margin-top: 60px;
+  margin-top: 85px;
 }
 
 .currentShapeContainer {
@@ -24,7 +23,7 @@
   @mixin flex right, center, center;
   position: absolute;
   left: 50px;
-  bottom: 100px;
+  bottom: 50px;
   width: 400px;
   flex-wrap: wrap;
 
@@ -80,12 +79,32 @@
   }
 }
 
-.blanks {
+.entryCompleteControls {
   @mixin flex right, center, center;
+  position: absolute;
+  bottom: 110px;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+
+  .button {
+    margin-right: 20px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.blanks {
   position: absolute;
   width: 400px;
   left: 50px;
-  top: 140px;
+  top: 175px;
+}
+
+.enteredDigits {
+  @mixin flex right, center, center;
 
   .enteredDigit {
     @mixin flex right, center, center;
@@ -96,6 +115,11 @@
     font-size: 18px;
     font-weight: bold;
     color: $dark-gray-1;
+
+    &.bold {
+      border-bottom: 3px solid black;
+      margin-bottom: 3px;
+    }
   }
 }
 
@@ -104,7 +128,7 @@
   position: absolute;
   width: 400px;
   left: 50px;
-  top: 165px;
+  top: 200px;
 
   .answer {
     @mixin flex down, center;
@@ -195,25 +219,4 @@
 
 .answerAnimationExitActive {
   opacity: 0;
-}
-
-.startContainer {
-  @mixin flex down, center, center;
-  position: absolute;
-  bottom: 50px;
-  left: 0;
-  right: 0;
-  font-weight: bold;
-
-  .startButton {
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 12px;
-    margin-left: 10px;
-    cursor: pointer;
-
-    &:hover {
-      color: $green;
-    }
-  }
 }

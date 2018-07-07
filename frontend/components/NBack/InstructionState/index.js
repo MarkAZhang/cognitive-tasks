@@ -42,7 +42,7 @@ export default class InstructionState extends Component {
       isPractice: true,
     })
 
-    this.props.switchState('nback')
+    this.props.switchState('core')
   }
 
   onStart = () => {
@@ -52,7 +52,7 @@ export default class InstructionState extends Component {
 
     this.props.appendAction(newActionEntry)
 
-    this.props.switchState('nback')
+    this.props.switchState('core')
   }
 
   render() {

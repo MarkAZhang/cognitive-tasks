@@ -23,23 +23,25 @@
   margin-bottom: 50px;
 }
 
+.nextStage {
+  @mixin font instruction;
+  margin-top: 140px;
+}
+
+.endOfTest {
+  @mixin font instruction;
+  margin-top: 120px;
+
+  .instruction {
+    margin: 15px auto;
+  }
+}
+
 .startContainer {
   @mixin flex down, center, center;
   position: absolute;
-  bottom: 100px;
+  bottom: 75px;
   left: 0;
   right: 0;
   font-weight: bold;
-
-  .startButton {
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 12px;
-    margin-left: 10px;
-    cursor: pointer;
-
-    &:hover {
-      color: $green;
-    }
-  }
 }

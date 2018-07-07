@@ -17,7 +17,7 @@ import { TEST_NUMBER, MAX_WRONG, MAX_CORRECT } from '../constants'
 
 import cs from './styles.css'
 
-export default class NBackState extends Component {
+export default class CoreTaskState extends Component {
   state = {
     testShapes: generateShapes(this.props.taskVars.n, TEST_NUMBER),
     index: 0,
@@ -200,7 +200,7 @@ export default class NBackState extends Component {
   }
 }
 
-NBackState.propTypes = {
+CoreTaskState.propTypes = {
   switchState: PropTypes.func.isRequired,
   appendAction: PropTypes.func.isRequired,
   currentStage: PropTypes.stage,

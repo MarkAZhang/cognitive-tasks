@@ -5,12 +5,18 @@ import {
   TitleState, InstructionState, CoreTaskState, EndState, LevelUpState
 } from '~/components/BackwardDigitSpan'
 
+// Reuse some components from NBack.
+import {
+  SignInState,
+} from '~/components/NBack'
+
 import cs from './styles.css'
 
 const taskStates = {
   title: TitleState,
+  signin: SignInState,
   instruction: InstructionState,
-  coretask: CoreTaskState,
+  core: CoreTaskState,
   end: EndState,
   levelup: LevelUpState,
 }
@@ -22,9 +28,9 @@ class BackwardDigitSpan extends Component {
         <TaskEngine
           taskStates={taskStates}
           startState='title'
-          startTaskData={{
-            n: 11,
-            userAnswers: [],
+          initialTaskVars={{
+            n: 2,
+            isPractice: false,
           }}
         />
       </div>
