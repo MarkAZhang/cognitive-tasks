@@ -16,6 +16,7 @@ const EnteredDigits = props =>
 EnteredDigits.propTypes = {
   digits: PropTypes.arrayOf(PropTypes.number),
   boldIndex: PropTypes.number,
+  className: PropTypes.string,
 }
 
 export default EnteredDigits

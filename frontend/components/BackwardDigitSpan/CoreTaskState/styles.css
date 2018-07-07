@@ -105,16 +105,15 @@
 
 .enteredDigits {
   @mixin flex right, center, center;
+  color: $dark-gray-2;
 
   .enteredDigit {
     @mixin flex right, center, center;
+    @mixin font digit;
     width: 25px;
     height: 25px;
     margin: 5px;
-    border-bottom: 1px solid $dark-gray-1;
-    font-size: 18px;
-    font-weight: bold;
-    color: $dark-gray-1;
+    border-bottom: 1px solid $dark-gray-2;
 
     &.bold {
       border-bottom: 3px solid black;
@@ -143,7 +142,7 @@
   }
 
   .answerDigit {
-    font-weight: bold;
+    @mixin font digit;
     color: $light-gray-2;
   }
 

@@ -26,7 +26,16 @@ const fontStyles = {
   },
   input: {
     fontSize: 18,
-  }
+  },
+  /* backward digit */
+  digit: {
+    fontSize: 18,
+    fontWeight: 700,
+  },
+  bigDigit: {
+    fontSize: 32,
+    fontWeight: 700,
+  },
 }
 
 const font = (rule, type) => {

@@ -1,5 +1,6 @@
 import cx from 'classnames'
 import { Component } from 'react'
+import { range, reverse } from 'lodash/fp'
 
 import PropTypes from '~/utils/propTypes'
 import { Icon, LiteButton } from '~/components'
@@ -7,8 +8,15 @@ import { generateShapes } from '~/utils/nback/shapes'
 import ActionManager from '~/utils/actionManager'
 
 import cs from './styles.css'
+import EnteredDigits from '../CoreTaskState/EnteredDigits';
+
+const EXAMPLE_LIMIT = 6
 
 export default class InstructionState extends Component {
+  state = {
+    exampleDigits: range(1, this.props.taskVars.n + 1),
+  }
+
   componentWillMount() {
     ActionManager.reset()
     // Session starts on Stage 1 instructions.
@@ -53,17 +61,32 @@ export default class InstructionState extends Component {
         <div className={cs.levelDisplay}>Stage {this.props.taskVars.n - 1}</div>
         <div className={cs.instructions}>
           <div className={cs.instruction}>
-            {this.props.taskVars.n === 1
-              ? <span>You will be shown 1 digit.</span>
-              : <span>You will be shown {this.props.taskVars.n} digits, one after another</span>
-            }
+            <span>You will be shown {this.props.taskVars.n} random digits, one after another</span>
           </div>
+          {this.props.taskVars.n <= EXAMPLE_LIMIT &&
+            <div className={cs.example}>
+              <div className={cs.digits}>
+                {this.state.exampleDigits.map((digit, index) =>
+                  <div className={cs.exampleDigit} key={index}>
+                    {digit}
+                  </div>
+                )}
+              </div>
+            </div>
+          }
           <div className={cs.instruction}>
-            {this.props.taskVars.n === 1
-              ? <span>Remember this digit and enter it on the following screen.</span>
-              : <span>Remember these digits and <b>enter them backwards</b> on the following screen.</span>
-            }
+            Enter these digits <b>backwards</b> on the following screen.
           </div>
+          {this.props.taskVars.n <= EXAMPLE_LIMIT &&
+            <div className={cs.example}>
+              <EnteredDigits className={cs.enteredDigits} digits={reverse(this.state.exampleDigits)} />
+              <div className={cs.checks}>
+                {this.state.exampleDigits.map((_, index) =>
+                  <Icon key={index} glyph='yes' className={cs.yesIcon} />
+                )}
+              </div>
+            </div>
+          }
         </div>
         <div className={cs.controls}>
           <LiteButton className={cs.button} onClick={this.onPractice}>Practice</LiteButton>

@@ -23,7 +23,7 @@
 
 .instructions {
   margin: 10px auto;
-  width: 300px;
+  width: 350px;
   font-size: 18px;
   text-align: center;
   margin-top: 20px;
@@ -34,17 +34,41 @@
   }
 }
 
-.inlineIcon {
-  display: inline-block;
-  transform: translateY(2px);
+.example {
+  margin: 10px 0;
+
+  .exampleDigit {
+    @mixin font bigDigit;
+    color: $light-gray-3;
+
+    margin-right: 15px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .enteredDigits {
+    color: $light-gray-3 !important;
+  }
 }
 
-.yesIcon {
-  color: $green;
+.digits {
+  @mixin flex right, center, center;
 }
 
-.noIcon {
-  color: $red;
+.checks {
+  @mixin flex right, center, center;
+
+  .yesIcon {
+    @mixin flex right, center, center;
+    color: $green;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    margin-top: 0;
+    font-size: 18px;
+  }
 }
 
 .controls {

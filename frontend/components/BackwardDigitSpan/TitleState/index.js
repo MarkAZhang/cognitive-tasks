@@ -25,7 +25,7 @@ export default class TitleState extends Component {
           <div className={cs.subtitle}>Cognitive Test</div>
         </div>
         <div className={cs.digits}>
-          <EnteredDigits className={cs.blanks} digits={[null, null, null, 1, 2, 5]} boldIndex={2} />
+          <EnteredDigits className={cs.blanks} digits={[6, 5, 4, null, null, null]} boldIndex={3} />
         </div>
         <div className={cs.startContainer}>
           <LiteButton

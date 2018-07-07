@@ -3,7 +3,7 @@ import {
   CSSTransition,
   TransitionGroup,
 } from 'react-transition-group'
-import { range, set, some } from 'lodash/fp'
+import { range, set, some, reverse } from 'lodash/fp'
 import cx from 'classnames'
 
 import getAnimationClassNames from '~/utils/animation'
@@ -116,9 +116,10 @@ export default class CoreTaskState extends Component {
   render() {
     const entryComplete = this.state.enterDigitMode && this.state.index === -1
     const isPractice = this.props.taskVars.isPractice
+    const n = this.props.taskVars.n
     return (
       <div>
-        <div className={cs.levelDisplay}>Stage {this.props.taskVars.n - 1} {isPractice && '(Practice)'}</div>
+        <div className={cs.levelDisplay}>Stage {n - 1} {isPractice && '(Practice)'}</div>
         <TransitionGroup className={cs.digitAnimationGroup}>
           {!this.state.enterDigitMode &&
             <CSSTransition
@@ -149,16 +150,16 @@ export default class CoreTaskState extends Component {
             >
               <div className={cs.answerAnimationGroup}>
                 {this.state.enterDigitMode &&
-                  <EnteredDigits className={cs.blanks} digits={this.state.enteredDigits} boldIndex={this.state.index} />
+                  <EnteredDigits className={cs.blanks} digits={reverse(this.state.enteredDigits)} boldIndex={n - 1 - this.state.index} />
                 }
                 {entryComplete &&
                   <div className={cs.answers}>
-                    {this.state.testDigits.map((i, index) =>
+                    {reverse(this.state.testDigits).map((i, index) =>
                       <div className={cs.answer} key={index}>
                         <div className={cs.answerDigit}>
                           {i}
                         </div>
-                        {this.state.testDigits[index] == this.state.enteredDigits[index]
+                        {this.state.testDigits[n - 1 - index] == this.state.enteredDigits[n - 1 - index]
                           ? <Icon glyph='yes' className={cs.yesIcon} />
                           : <Icon glyph='no' className={cs.noIcon} />
                         }
