@@ -1,9 +1,10 @@
 import { Component } from 'react'
-
-import { BasicDataTable } from '~/components'
-import { getAllTestSessions } from '~/utils/endpoints'
 import { map, max, filter, flow, flatten, sum } from 'lodash/fp'
 import { round } from 'lodash'
+
+import { BasicDataTable, LiteButton } from '~/components'
+import { getAllTestSessions } from '~/utils/endpoints'
+import { exportCsvFile } from '~/utils/csv'
 
 import cs from './styles.css'
 
@@ -115,9 +116,25 @@ class TestSessionTable extends Component {
     })
   }
 
+  downloadCSV = () => {
+    exportCsvFile(
+      'nback_test_sessions.csv',
+      this.state.testSessionData,
+      COLUMNS,
+    )
+  }
+
   render() {
     return (
-      <BasicDataTable data={this.state.testSessionData} columns={COLUMNS} className={cs.testSessionTable} tall />
+      <div>
+        {this.state.testSessionData &&
+          <div className={cs.info}>
+            <div className={cs.label}>Displaying {this.state.testSessionData.length} sessions</div>
+            <LiteButton className={cs.csvButton} onClick={this.downloadCSV}>Download CSV</LiteButton>
+          </div>
+        }
+        <BasicDataTable data={this.state.testSessionData} columns={COLUMNS} className={cs.testSessionTable} tall />
+      </div>
     )
   }
 }

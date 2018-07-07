@@ -1,7 +1,8 @@
 import { Component } from 'react'
 
-import { BasicDataTable } from '~/components'
+import { BasicDataTable, LiteButton } from '~/components'
 import { getAllUsers } from '~/utils/endpoints'
+import { exportCsvFile } from '~/utils/csv'
 
 import cs from './styles.css'
 
@@ -32,10 +33,23 @@ class UserTable extends Component {
     })
   }
 
+  downloadCSV = () => {
+    exportCsvFile(
+      'nback_users.csv',
+      this.state.userData,
+      COLUMNS,
+    )
+  }
+
   render() {
     return (
       <div>
-        <div className={cs.csvMsg}>CSV Download coming soon...</div>
+        {this.state.userData &&
+          <div className={cs.info}>
+            <div className={cs.label}>Displaying {this.state.userData.length} users</div>
+            <LiteButton className={cs.csvButton} onClick={this.downloadCSV}>Download CSV</LiteButton>
+          </div>
+        }
         <BasicDataTable data={this.state.userData} columns={COLUMNS} className={cs.userTable} />
       </div>
     )

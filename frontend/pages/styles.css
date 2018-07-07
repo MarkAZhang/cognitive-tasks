@@ -1,3 +1,5 @@
+@import 'vars.css';
+
 .center {
   @mixin flex down, center, center;
   height: 100vh;
@@ -10,4 +12,16 @@
 
 .csvMsg {
   margin: 20px;
+}
+
+.info {
+  margin: 20px;
+
+  .label {
+    margin-bottom: 10px;
+  }
+}
+
+.csvButton {
+  background-color: $off-white;
 }
