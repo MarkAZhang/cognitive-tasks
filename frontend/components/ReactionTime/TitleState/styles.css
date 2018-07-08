@@ -1,0 +1,44 @@
+@import 'vars.css';
+
+.titleState {
+  color: $dark-gray-2;
+}
+
+.header {
+  @mixin flex down, center, end;
+  height: 180px;
+  width: 100%;
+}
+
+.title {
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  text-align: center;
+  margin-left: 5px; /* For mysterious reasons, the title is slightly off-center */
+}
+
+.subtitle {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  color: $light-gray-2;
+}
+
+.icons {
+  @mixin flex right, center, center;
+  width: 200px;
+  margin: 0 auto;
+  font-size: 72px;
+  margin-top: 45px;
+  opacity: 0.2;
+}
+
+.startContainer {
+  @mixin flex down, center, center;
+  position: absolute;
+  bottom: 100px;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+}

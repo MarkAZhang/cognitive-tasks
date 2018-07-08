@@ -12,9 +12,20 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.icon-circle-alert:before {
+  content: "\e901";
+}
+.icon-circle-check:before {
+  content: "\e902";
+}
+.icon-circle-x:before {
+  content: "\e903";
+}
 .icon-circle:before {
   content: "\e900";
+}
+.icon-clock:before {
+  content: "\e952";
 }
 .icon-star:before {
   content: "\e9d9";

@@ -34,6 +34,8 @@ export default class SignInState extends Component {
   }
 
   render() {
+    const isReactionTime = window.location.pathname.indexOf('reaction') !== -1
+
     return (
       <div className={cs.signInState}>
         {this.state.stage === 0 && <div className={cs.title}>Welcome</div>}
@@ -49,12 +51,23 @@ export default class SignInState extends Component {
         }
         {this.state.stage === 1 &&
           <div>
-            <div className={cs.instruction}>
-              As you progress, the task will get more difficult.
-            </div>
-            <div className={cs.instruction}>
-              After each stage, we will give you feedback on your performance.
-            </div>
+            {!isReactionTime &&
+              <div>
+                <div className={cs.instruction}>
+                  As you progress, the task will get more difficult.
+                </div>
+                <div className={cs.instruction}>
+                  After each stage, we will give you feedback on your performance.
+                </div>
+              </div>
+            }
+            {isReactionTime &&
+              <div className={cs.reactionTimeInstructions}>
+                <div className={cs.instruction}>
+                  After the test, we will give you feedback on your performance.
+                </div>
+              </div>
+            }
             <div className={cs.br} />
             <div className={cs.instruction}>
               To begin, please enter your AWS ID.

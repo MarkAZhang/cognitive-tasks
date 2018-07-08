@@ -1,0 +1,206 @@
+@import 'vars.css';
+
+.title {
+  @mixin font title;
+  color: $light-gray-2;
+  text-align: center;
+  margin-left: 10px;
+  margin-top: 85px;
+}
+
+.instruction {
+  @mixin font instruction;
+  color: $light-gray-3;
+  text-align: center;
+  position: absolute;
+  top: 350px;
+  left: 0;
+  right: 0;
+}
+
+.alert {
+  position: absolute;
+  top: 150px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 128px;
+  color: $dark-gray-2;
+}
+
+.currentShapeContainer {
+  margin-top: 30px;
+
+  .currentShape {
+    font-size: 160px;
+    color: $dark-gray-2;
+    position: absolute;
+  }
+}
+
+.controls {
+  @mixin flex right, center, center;
+  margin-top: 50px;
+  position: absolute;
+  width: 100%;
+
+  .button {
+    @mixin flex right, center, center;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border: 1px solid #ddd;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $gray-gradient-lite;
+    }
+
+    &:active {
+      box-shadow: none;
+      background-color: $light-gray-2;
+    }
+
+    &:not(:first-child) {
+      margin-left: 30px;
+    }
+  }
+
+  .nextButton {
+    width: 150px;
+
+    .nextLabel {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      margin-left: 8px;
+      color: $dark-gray-1;
+    }
+  }
+
+  .yesIcon {
+    font-size: 24px;
+    color: $green;
+  }
+
+  .noIcon {
+    font-size: 24px;
+    color: $red;
+  }
+}
+
+.feedbackControls {
+  margin-top: 30px;
+
+  .feedbackButton {
+    margin-right: 20px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.feedback {
+  text-align: center;
+
+  .text {
+    @mixin font instruction;
+    color: $dark-gray-2;
+    margin-top: 10px;
+  }
+
+  .boxIcon {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin-right: 4px;
+  }
+
+  .correct {
+    @mixin font highlight;
+    color: $green;
+    margin-left: 4px;
+  }
+
+  .wrong {
+    @mixin font highlight;
+    color: $red;
+    margin-left: 4px;
+  }
+
+  .yes {
+    color: $green;
+  }
+
+  .no {
+    color: $red;
+  }
+}
+
+.endPractice {
+  @mixin flex down, center, center;
+  position: absolute;
+  bottom: 35px;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+}
+
+.animationGroup {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+}
+
+.shapeAnimationEnter {
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 200ms linear 400ms, transform 200ms linear 400ms;
+}
+
+.shapeAnimationEnterActive {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.shapeAnimationExit {
+  opacity: 1;
+  transition: opacity 200ms, transform 200ms;
+  transform: translateX(0px);
+}
+
+.shapeAnimationExitActive {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.controlsAnimationGroup {
+  position: relative;
+  width: 400px;
+  height: 60px;
+  margin: 0 auto;
+}
+
+.controlsAnimationEnter {
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 200ms linear 400ms, transform 200ms linear 400ms;
+}
+
+.controlsAnimationEnterActive {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.controlsAnimationExit {
+  opacity: 1;
+  transition: opacity 200ms, transform 200ms;
+  transform: translateX(0px);
+}
+
+.controlsAnimationExitActive {
+  opacity: 0;
+  transform: translateX(-10px);
+}

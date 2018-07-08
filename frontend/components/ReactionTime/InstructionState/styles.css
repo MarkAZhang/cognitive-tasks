@@ -1,0 +1,57 @@
+@import 'vars.css';
+
+.titleState {
+  color: $dark-gray-2;
+  padding: 30px;
+}
+
+.levelDisplay {
+  @mixin font title;
+  color: $light-gray-3;
+  text-align: center;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.title {
+  @mixin font title;
+  color: $light-gray-3;
+  text-align: center;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.instructions {
+  margin: 10px auto;
+  width: 350px;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 75px;
+
+  .instruction {
+    margin-top: 15px;
+  }
+}
+
+.alertIcon {
+  font-size: 48px;
+  margin-top: 15px;
+}
+
+.controls {
+  @mixin flex right, center, center;
+  position: absolute;
+  bottom: 75px;
+  left: 0;
+  right: 0;
+  font-weight: bold;
+
+  .button {
+    margin-right: 20px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

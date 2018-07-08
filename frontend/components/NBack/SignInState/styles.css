@@ -40,6 +40,10 @@
   right: 0;
 }
 
+.reactionTimeInstructions {
+  margin-top: 75px;
+}
+
 .input {
   @mixin font input;
 }
