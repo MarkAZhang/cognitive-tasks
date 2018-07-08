@@ -3,14 +3,14 @@ import { map, max, filter, flow, flatten, sum } from 'lodash/fp'
 import { round } from 'lodash'
 
 import { BasicDataTable, LiteButton } from '~/components'
-import { getAllTestSessions } from '~/utils/endpoints'
+import { getNBackSessions } from '~/utils/endpoints'
 import { exportCsvFile } from '~/utils/csv'
 
 import cs from './styles.css'
 
 const COLUMNS = [
   {
-    header: 'User AWS ID',
+    header: 'Server ID',
     key: 'userId',
   },
   {
@@ -18,8 +18,8 @@ const COLUMNS = [
     key: 'type',
   },
   {
-    header: 'Furthest Stage',
-    key: 'furthestStage',
+    header: 'Highest N Reached',
+    key: 'highestN',
   },
   {
     header: 'Practice Sessions',
@@ -61,7 +61,7 @@ const COLUMNS = [
 ]
 
 const processTestSession = session => {
-  const furthestStage = max(map(stage => stage.metadata.n, session.stages))
+  const highestN = max(map(stage => stage.metadata.n, session.stages))
   const practiceSessions = filter(stage => stage.metadata.isPractice, session.stages).length
 
   const allOfficialAnswers = flow(
@@ -74,13 +74,13 @@ const processTestSession = session => {
 
   const data = {
     ...session,
-    furthestStage,
+    highestN,
     practiceSessions,
     averageAnswerSpeed: round(sum(allOfficialAnswers) / allOfficialAnswers.length / 1000, 2),
   }
 
   for (let i = 1; i <= 4; i++) {
-    if (i > furthestStage) {
+    if (i > highestN) {
       data[`averageAnswerSpeed_${i}`] = '--'
       data[`practiceSessions_${i}`] = '--'
     } else {
@@ -103,13 +103,13 @@ const processTestSession = session => {
   return data
 }
 
-class TestSessionTable extends Component {
+class NBackSessionTable extends Component {
   state = {
     testSessionData: null,
   }
 
   componentWillMount = async () => {
-    const allTestSessions = await getAllTestSessions()
+    const allTestSessions = await getNBackSessions()
 
     this.setState({
       testSessionData: map(processTestSession, allTestSessions),
@@ -139,4 +139,4 @@ class TestSessionTable extends Component {
   }
 }
 
-export default TestSessionTable
+export default NBackSessionTable

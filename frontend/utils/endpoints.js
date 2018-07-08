@@ -14,7 +14,17 @@ export const getAllUsers = async () => {
   return res.users
 }
 
-export const getAllTestSessions = async () => {
-  const res = await request.getWithAuthPrompt('testsessions/all')
+export const getNBackSessions = async () => {
+  const res = await request.getWithAuthPrompt('sessions/nback')
+  return res.testSessions
+}
+
+export const getDigitsSessions = async () => {
+  const res = await request.getWithAuthPrompt('sessions/digits')
+  return res.testSessions
+}
+
+export const getReactionSessions = async () => {
+  const res = await request.getWithAuthPrompt('sessions/reaction')
   return res.testSessions
 }

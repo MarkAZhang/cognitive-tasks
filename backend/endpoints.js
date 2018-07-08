@@ -1,5 +1,5 @@
 import Datastore from '@google-cloud/datastore'
-import { map, mapValues, groupBy, split } from 'lodash/fp'
+import { map, mapValues, groupBy, split, filter } from 'lodash/fp'
 
 import { PASSWORD } from '../server-password'
 
@@ -60,17 +60,18 @@ const formatTestSession = session => ({
   serverId: session[Datastore.KEY].id,
 })
 
-const fetchTestSessions = async () => {
-
+const fetchTestSessions = async (type) => {
   const query = datastore
       .createQuery('TestSession')
       .order('startTime', {
         descending: true,
-      });
+      })
 
   const response = await datastore.runQuery(query)
 
-  return map(formatTestSession, response[0])
+  const sessions = filter(session => session.type === type, response[0])
+
+  return map(formatTestSession, sessions)
 }
 
 const getOrCreate = async (req, res) => {
@@ -110,13 +111,17 @@ const logUserSession = async (req, res) => {
   })
 }
 
-const getAllUsers = async (req, res) => {
+const getProtectedEndpoint = endpoint => (req, res) => {
   const auth = split(' ', req.get('authorization'))
 
   if (auth[1] !== PASSWORD) {
     return res.status(401).send("Authorization Required");
   }
 
+  return endpoint(req, res)
+}
+
+const getAllUsers = getProtectedEndpoint(async (req, res) => {
   let userData = await fetchUsers()
 
   const testSessionData = await fetchTestSessions()
@@ -131,25 +136,37 @@ const getAllUsers = async (req, res) => {
   res.json({
     users: userData,
   })
-}
+})
 
-const getAllTestSessions = async (req, res) => {
-  const auth = split(' ', req.get('authorization'))
-
-  if (auth[1] !== PASSWORD) {
-    return res.status(401).send("Authorization Required");
-  }
-
-  const testSessionData = await fetchTestSessions()
+const getNBackSessions = getProtectedEndpoint(async (req, res) => {
+  const testSessionData = await fetchTestSessions('nback')
 
   res.json({
     testSessions: testSessionData,
   })
-}
+})
+
+const getDigitsSessions = getProtectedEndpoint(async (req, res) => {
+  const testSessionData = await fetchTestSessions('digits')
+
+  res.json({
+    testSessions: testSessionData,
+  })
+})
+
+const getReactionSessions = getProtectedEndpoint(async (req, res) => {
+  const testSessionData = await fetchTestSessions('reaction')
+
+  res.json({
+    testSessions: testSessionData,
+  })
+})
 
 module.exports = {
   getOrCreate,
   logUserSession,
   getAllUsers,
-  getAllTestSessions,
+  getNBackSessions,
+  getDigitsSessions,
+  getReactionSessions,
 }
