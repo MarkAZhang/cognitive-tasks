@@ -52,16 +52,16 @@ export default class InstructionState extends Component {
         <div className={cs.levelDisplay}>Instructions</div>
         <div className={cs.instructions}>
           <div className={cs.instruction}>
-            <span>During the test, the following picture will appear after a short delay.</span>
+            <span>During the test, the following symbol will appear after a short delay.</span>
           </div>
           <div className={cs.alertIcon}>
             <Icon glyph='circle-alert' />
           </div>
           <div className={cs.instruction}>
-            When you see this picture, press the spacebar as fast as you can.
+            When you see the symbol, press the spacebar as fast as you can.
           </div>
           <div className={cs.instruction}>
-            Do not press the spacebar before the picture appears.
+            Do not press the spacebar before the symbol appears.
           </div>
         </div>
         <div className={cs.controls}>

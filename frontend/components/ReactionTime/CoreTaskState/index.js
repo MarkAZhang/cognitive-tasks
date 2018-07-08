@@ -1,9 +1,14 @@
 import { Component } from 'react'
 import { random } from 'lodash/fp'
+import {
+  CSSTransition,
+  TransitionGroup,
+} from 'react-transition-group';
 
 import PropTypes from '~/utils/propTypes'
 import Icon from '~/components/Icon'
 import ActionManager from '~/utils/actionManager'
+import getAnimationClassNames from '~/utils/animation'
 
 import cs from './styles.css'
 
@@ -104,16 +109,31 @@ export default class CoreTaskState extends Component {
     return (
       <div className={cs.coreTaskState}>
         <div className={cs.title}>Round {this.state.index + 1} of {NUM_ROUNDS}</div>
-        {this.state.currentState === 'appear' &&
-          <div className={cs.alert}>
-            <Icon glyph='circle-alert' />
-          </div>
-        }
-        {this.state.currentState === 'correct' &&
-          <div className={cs.alert}>
-            <Icon glyph='circle-check' />
-          </div>
-        }
+        <TransitionGroup className={cs.symbolsAnimationGroup}>
+          {(this.state.currentState === 'appear' || this.state.currentState === 'correct') &&
+            <CSSTransition
+              key='symbols'
+              timeout={{
+                enter: 50,
+                exit: 200
+              }}
+              classNames={getAnimationClassNames('symbolsAnimation', cs)}
+            >
+              <div>
+                {this.state.currentState === 'appear' &&
+                  <div className={cs.symbol}>
+                    <Icon glyph='circle-alert' />
+                  </div>
+                }
+                {this.state.currentState === 'correct' &&
+                  <div className={cs.symbol}>
+                    <Icon glyph='circle-check' />
+                  </div>
+                }
+              </div>
+            </CSSTransition>
+          }
+        </TransitionGroup>
         <div className={cs.instruction}>
           Press spacebar when you see the symbol.
         </div>
