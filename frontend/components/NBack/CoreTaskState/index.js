@@ -88,13 +88,6 @@ export default class CoreTaskState extends Component {
   renderFeedback = () => {
     const lastAnswer = last(filter(['type', 'answer'], this.props.currentStage.actions))
 
-    const answerIcon = (
-      <Icon
-        glyph={lastAnswer.metadata.userAnswer}
-        className={cx(cs[lastAnswer.metadata.userAnswer], cs.boxIcon)}
-      />
-    )
-
     const correctSpan = lastAnswer.metadata.userWasCorrect === 'yes'
       ? <span className={cs.correct}>Correct</span>
       : <span className={cs.wrong}>Wrong</span>
@@ -122,7 +115,7 @@ export default class CoreTaskState extends Component {
     return (
       <div className={cs.feedback}>
         <div className={cs.text}>
-          {answerIcon} is {correctSpan}
+          {correctSpan}
         </div>
         <div className={cs.text}>
           <div>The current shape {curShape} {matchesString}</div>

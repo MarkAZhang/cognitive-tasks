@@ -19,7 +19,7 @@ const fontStyles = {
     fontWeight: 700,
   },
   highlight: {
-    fontSize: 15,
+    fontSize: 18,
     textTransform: 'uppercase',
     letterSpacing: 4,
     fontWeight: 700,
