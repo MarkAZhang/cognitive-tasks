@@ -18,6 +18,15 @@ class TaskEngine extends Component {
 
   componentWillMount() {
     this.reset()
+    window.onbeforeunload = this.onBeforeUnload
+  }
+
+  componentWillUnmount() {
+    window.onbeforeunload = null
+  }
+
+  onBeforeUnload = () => {
+    return this.shouldStartNewSession() ? undefined : true
   }
 
   reset = () => {
