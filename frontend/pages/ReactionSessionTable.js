@@ -10,12 +10,16 @@ import cs from './styles.css'
 
 const COLUMNS = [
   {
-    header: 'Server ID',
-    key: 'userId',
+    header: 'Test ID',
+    key: 'testId',
   },
   {
-    header: 'Test Type',
-    key: 'type',
+    header: 'Age',
+    key: 'age',
+  },
+  {
+    header: 'Gender',
+    key: 'gender',
   },
   {
     header: 'Avg. Reaction Time (ms)',
@@ -96,7 +100,7 @@ class ReactionSessionTable extends Component {
 
   downloadCSV = () => {
     exportCsvFile(
-      'digits_test_sessions.csv',
+      'reaction_test_sessions.csv',
       this.state.testSessionData,
       COLUMNS,
     )

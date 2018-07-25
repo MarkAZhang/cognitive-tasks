@@ -10,12 +10,16 @@ import cs from './styles.css'
 
 const COLUMNS = [
   {
-    header: 'Server ID',
-    key: 'userId',
+    header: 'Test ID',
+    key: 'testId',
   },
   {
-    header: 'Test Type',
-    key: 'type',
+    header: 'Age',
+    key: 'age',
+  },
+  {
+    header: 'Gender',
+    key: 'gender',
   },
   {
     header: 'Highest N Reached',
@@ -29,6 +33,8 @@ const COLUMNS = [
     header: 'Avg. Answer Speed (s)',
     key: 'averageAnswerSpeed',
   },
+  { header: 'Practice Sessions for Highest N', key: 'practiceSessions_highestN' },
+  { header: 'Avg. Answer Speed for Highest N (s)', key: 'averageAnswerSpeed_highestN' },
   {
     header: 'Start Time',
     key: 'startTime',
@@ -60,6 +66,20 @@ const COLUMNS = [
   },
 ]
 
+const getAnswersForN = (n, session) =>
+  flow(
+    filter(stage => !stage.metadata.isPractice && stage.metadata.n === n),
+    map('actions'),
+    flatten,
+    filter(action => action.type === 'answer'),
+    map('ms'),
+  )(session.stages)
+
+const getPracticeSessionsForN = (n, session) =>
+  filter(
+    stage => stage.metadata.isPractice && stage.metadata.n === n,
+  )(session.stages).length
+
 const processTestSession = session => {
   const highestN = max(map(stage => stage.metadata.n, session.stages))
   const practiceSessions = filter(stage => stage.metadata.isPractice, session.stages).length
@@ -84,21 +104,19 @@ const processTestSession = session => {
       data[`averageAnswerSpeed_${i}`] = '--'
       data[`practiceSessions_${i}`] = '--'
     } else {
-      const answers = flow(
-        filter(stage => !stage.metadata.isPractice && stage.metadata.n === i),
-        map('actions'),
-        flatten,
-        filter(action => action.type === 'answer'),
-        map('ms'),
-      )(session.stages)
-      const practiceSessions = filter(
-        stage => stage.metadata.isPractice && stage.metadata.n === i,
-      )(session.stages).length
+      const answersForN = getAnswersForN(i, session)
+      const practiceSessionsForN = getPracticeSessionsForN(i, session)
 
-      data[`averageAnswerSpeed_${i}`] = round(sum(answers) / answers.length / 1000, 2)
-      data[`practiceSessions_${i}`] = practiceSessions
+      data[`averageAnswerSpeed_${i}`] = round(sum(answersForN) / answersForN.length / 1000, 2)
+      data[`practiceSessions_${i}`] = practiceSessionsForN
     }
   }
+
+  const answersForN = getAnswersForN(highestN, session)
+  const practiceSessionsForN = getPracticeSessionsForN(highestN, session)
+
+  data.averageAnswerSpeed_highestN = round(sum(answersForN) / answersForN.length / 1000, 2)
+  data.practiceSessions_highestN = practiceSessionsForN
 
   return data
 }
