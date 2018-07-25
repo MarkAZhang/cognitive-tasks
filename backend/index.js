@@ -6,6 +6,7 @@ import 'babel-polyfill'
 import {
   getOrCreate, logSession, getAllUsers,
   getNBackSessions, getDigitsSessions, getReactionSessions,
+  getTestID,
 } from './endpoints'
 
 var app = express()
@@ -21,6 +22,7 @@ app.get('/sessions/nback', getNBackSessions)
 app.post('/sessions/log', logSession)
 app.get('/sessions/digits', getDigitsSessions)
 app.get('/sessions/reaction', getReactionSessions)
+app.get('/api/get_test_id', getTestID)
 
 
 app.get('/*', (req, res) => {

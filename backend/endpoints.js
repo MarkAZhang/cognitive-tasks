@@ -1,4 +1,5 @@
 import Datastore from '@google-cloud/datastore'
+import crypto from 'crypto'
 import { map, mapValues, groupBy, split, filter } from 'lodash/fp'
 
 import { PASSWORD } from '../server-password'
@@ -161,6 +162,12 @@ const getReactionSessions = getProtectedEndpoint(async (req, res) => {
   })
 })
 
+const getTestID = (req, res) => {
+  res.json({
+    testID: crypto.randomBytes(8).toString('hex')
+  })
+}
+
 module.exports = {
   getOrCreate,
   logSession,
@@ -168,4 +175,5 @@ module.exports = {
   getNBackSessions,
   getDigitsSessions,
   getReactionSessions,
+  getTestID,
 }

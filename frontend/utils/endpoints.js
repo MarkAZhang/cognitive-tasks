@@ -28,3 +28,8 @@ export const getReactionSessions = async () => {
   const res = await request.getWithAuthPrompt('sessions/reaction')
   return res.testSessions
 }
+
+export const getTestID = async () => {
+  const res = await request.get('api/get_test_id')
+  return res.testID
+}

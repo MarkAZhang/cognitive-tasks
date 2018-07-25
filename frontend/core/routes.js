@@ -4,11 +4,13 @@ import {BrowserRouter, Switch} from 'react-router-dom'
 import {
   BackwardDigitSpan, NBack, ReactionTime,
   UserTable, NBackSessionTable, DigitsSessionTable, ReactionSessionTable,
+  TestId,
 } from '../pages'
 
 export default (
   <BrowserRouter>
     <Switch>
+      <Route path='/get-test-id' component={TestId} />
       <Route path='/digits' component={BackwardDigitSpan} />
       <Route path='/nback' component={NBack} />
       <Route path='/reaction' component={ReactionTime} />

@@ -25,3 +25,46 @@
 .csvButton {
   background-color: $off-white;
 }
+
+.testId {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(#F9F8FC, #F0EFF3);
+  text-align: center;
+  @mixin flex right, center, center;
+}
+
+.content {
+  color: $dark-gray-1;
+
+  .text {
+    font-size: 24px;
+  }
+
+  .id {
+    font-size: 36px;
+    padding: 10px;
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+
+  .instructions {
+    font-size: 24px;
+    width: 500px;
+    margin: 0 auto;
+  }
+
+  .heading {
+    font-size: 18px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+  }
+
+  .answer {
+    font-size: 18px;
+    width: 500px;
+    margin: 0 auto;
+    opacity: 0.5;
+  }
+}
