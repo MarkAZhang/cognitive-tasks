@@ -58,7 +58,7 @@ class TaskEngine extends Component {
   startNewSession = type => {
     this.updateTaskData('sessionRecord', {
       type,
-      startTime: new Date(),
+      startTime: (new Date()).toString(),
       endTime: null,
       stages: [],
     })
@@ -75,7 +75,7 @@ class TaskEngine extends Component {
       this.updateTaskData('sessionRecord.stages', stages => concat(stages, this.state.currentStage))
     }
 
-    this.updateTaskData('sessionRecord.endTime', new Date())
+    this.updateTaskData('sessionRecord.endTime', (new Date()).toString())
 
     this.setState({
       currentStage: null,
