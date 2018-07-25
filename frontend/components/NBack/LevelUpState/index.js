@@ -24,7 +24,7 @@ export default class LevelUpState extends Component {
     ActionManager.reset()
     const breakdown = getAnswerBreakdown(this.props.currentStage)
 
-    const nextStage = breakdown.correctPositiveAnswers.length >= MAX_CORRECT && !this.props.taskVars.isPractice
+    const nextStage = breakdown.correctAnswers.length >= MAX_CORRECT && !this.props.taskVars.isPractice
     const gameOver = !nextStage && !this.props.taskVars.isPractice
 
     this.setState({

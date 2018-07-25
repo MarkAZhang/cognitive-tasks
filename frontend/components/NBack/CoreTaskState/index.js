@@ -29,7 +29,7 @@ export default class CoreTaskState extends Component {
 
     if (!isPractice && (
       breakdown.wrongAnswers.length >= MAX_WRONG ||
-      breakdown.correctPositiveAnswers.length >= MAX_CORRECT
+      breakdown.correctAnswers.length >= MAX_CORRECT
     )) {
       nextProps.switchState('levelup')
       return

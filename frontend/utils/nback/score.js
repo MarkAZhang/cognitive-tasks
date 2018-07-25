@@ -15,9 +15,6 @@ const getWrongAnswers = answers =>
 const getCorrectAnswers = answers =>
   filter(ans => ans.metadata.userWasCorrect === 'yes', answers)
 
-const getCorrectPositiveAnswers = answers =>
-  filter(ans => ans.metadata.userAnswer === 'yes' && ans.metadata.correctAnswer === 'yes', answers)
-
 export const calculateAnswerAccuracy = (currentStage) => {
   const scorableAnswers = getScorableAnswers(currentStage)
 
@@ -32,6 +29,6 @@ export const getAnswerBreakdown = (currentStage) => {
     firstShapeActions: getFirstShapeActions(currentStage),
     instantFeedbackActions: getInstantFeedbackActions(currentStage),
     wrongAnswers: getWrongAnswers(scorableAnswers),
-    correctPositiveAnswers: getCorrectPositiveAnswers(scorableAnswers),
+    correctAnswers: getCorrectAnswers(scorableAnswers),
   }
 }
