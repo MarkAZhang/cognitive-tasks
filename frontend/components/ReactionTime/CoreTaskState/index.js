@@ -13,6 +13,7 @@ import getAnimationClassNames from '~/utils/animation'
 import cs from './styles.css'
 
 const NUM_ROUNDS = 10
+const NUM_ROUNDS_PRACTICE = 3
 const getRandomTime = () => random(1000, 4000)
 
 export default class CoreTaskState extends Component {
@@ -79,10 +80,15 @@ export default class CoreTaskState extends Component {
     }
   }
 
+  getRounds = () => {
+    const isPractice = this.props.taskVars.isPractice
+    return isPractice ? NUM_ROUNDS_PRACTICE : NUM_ROUNDS
+  }
+
   advance = () => {
     const nextIndex = this.state.index + 1
 
-    if (nextIndex >= NUM_ROUNDS) {
+    if (nextIndex >= this.getRounds()) {
       this.setState({
         currentState: 'leaving',
       })
@@ -108,7 +114,7 @@ export default class CoreTaskState extends Component {
   render() {
     return (
       <div className={cs.coreTaskState}>
-        <div className={cs.title}>Round {this.state.index + 1} of {NUM_ROUNDS}</div>
+        <div className={cs.title}>Round {this.state.index + 1} of {this.getRounds()}</div>
         <TransitionGroup className={cs.symbolsAnimationGroup}>
           {(this.state.currentState === 'appear' || this.state.currentState === 'correct') &&
             <CSSTransition
