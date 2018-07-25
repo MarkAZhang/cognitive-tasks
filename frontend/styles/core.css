@@ -12,7 +12,8 @@ body {
 }
 
 input,
-textarea {
+textarea,
+select {
   @mixin font default;
 }
 

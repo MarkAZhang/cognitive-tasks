@@ -27,6 +27,10 @@ const fontStyles = {
   input: {
     fontSize: 18,
   },
+  error: {
+    fontSize: 11,
+    fontWeight: 700,
+  },
   /* backward digit */
   digit: {
     fontSize: 18,
