@@ -22,13 +22,12 @@ const createNewUser = async awsId => {
   return key.id
 }
 
-const logNewSession = async (req, userServerId, session) => {
+const logNewSession = async (req, session) => {
   const key = datastore.key('TestSession')
 
   const entity = {
     key,
     data: {
-      userId: userServerId,
       ip: req.ip,
       userAgent: req.get('user-agent'),
       ...session,
@@ -103,8 +102,8 @@ const getOrCreate = async (req, res) => {
   }
 }
 
-const logUserSession = async (req, res) => {
-  const sessionId = await logNewSession(req, req.params.userServerId, req.body.session)
+const logSession = async (req, res) => {
+  const sessionId = await logNewSession(req, req.body.session)
   res.json({
     status: 'success',
     sessionId,
@@ -164,7 +163,7 @@ const getReactionSessions = getProtectedEndpoint(async (req, res) => {
 
 module.exports = {
   getOrCreate,
-  logUserSession,
+  logSession,
   getAllUsers,
   getNBackSessions,
   getDigitsSessions,

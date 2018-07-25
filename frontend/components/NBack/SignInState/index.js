@@ -9,7 +9,7 @@ import cs from './styles.css'
 
 export default class SignInState extends Component {
   state = {
-    id: '',
+    testId: '',
     age: '',
     gender: '',
     stage: 0,
@@ -17,9 +17,9 @@ export default class SignInState extends Component {
   }
 
   isContinueDisabled = () => {
-    const { stage, id, age, gender } = this.state
+    const { stage, testId, age, gender } = this.state
     return stage === 2 &&
-      (id === '' ||
+      (testId === '' ||
       !isFinite(toNumber(age, 10)) ||
       gender === '')
   }
@@ -32,8 +32,12 @@ export default class SignInState extends Component {
 
   onContinue = () => {
     if (this.state.stage === 2) {
-      // Sign user in.
-      this.props.setAwsId(this.state.awsId)
+      const { testId, age, gender } = this.state
+      this.props.updateUserMetadata({
+        testId,
+        age,
+        gender,
+      })
 
       this.props.switchState('instruction')
     }
@@ -47,7 +51,7 @@ export default class SignInState extends Component {
 
   onIDChange = event => {
     this.setState({
-      id: event.target.value,
+      testId: event.target.value,
     })
   }
 
@@ -81,7 +85,7 @@ export default class SignInState extends Component {
         {this.state.stage === 1 &&
           <div>
             {!isReactionTime &&
-              <div className={cs.paddedInstructions}>
+              <div className={cs.stageOne}>
                 <div className={cs.instruction}>
                   As you progress, the task will get more difficult.
                 </div>
@@ -107,7 +111,7 @@ export default class SignInState extends Component {
             <div className={cs.field}>
               <div className={cs.label}>Test ID</div>
               <div className={cs.inputContainer}>
-                <input className={cs.input} type='text' onChange={this.onIDChange} value={this.state.id} />
+                <input className={cs.input} type='text' onChange={this.onIDChange} value={this.state.testId} />
               </div>
             </div>
             <div className={cs.field}>
@@ -152,7 +156,6 @@ export default class SignInState extends Component {
 
 SignInState.propTypes = {
   switchState: PropTypes.func.isRequired,
-  setServerId: PropTypes.func.isRequired,
-  setAwsId: PropTypes.func.isRequired,
+  updateUserMetadata: PropTypes.func.isRequired,
   taskData: PropTypes.taskData,
 }

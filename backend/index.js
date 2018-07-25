@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 import 'babel-polyfill'
 
 import {
-  getOrCreate, logUserSession, getAllUsers,
+  getOrCreate, logSession, getAllUsers,
   getNBackSessions, getDigitsSessions, getReactionSessions,
 } from './endpoints'
 
@@ -16,9 +16,9 @@ app.use('/static', express.static(PATH_DIST))
 app.use(bodyParser.json())       // to support JSON-encoded bodies
 
 app.post('/user/get_or_create', getOrCreate)
-app.post('/user/:userServerId/log_session', logUserSession)
 app.get('/user/all', getAllUsers)
 app.get('/sessions/nback', getNBackSessions)
+app.post('/sessions/log', logSession)
 app.get('/sessions/digits', getDigitsSessions)
 app.get('/sessions/reaction', getReactionSessions)
 

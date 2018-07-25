@@ -15,8 +15,9 @@ const Stage = PropTypes.shape({
 const TaskVars = PropTypes.objectOf(PropTypes.any)
 
 const UserMetadata = PropTypes.shape({
-  serverId: PropTypes.string,
-  awsId: PropTypes.string,
+  testId: PropTypes.string,
+  age: PropTypes.string,
+  gender: PropTypes.string,
 })
 
 const SessionRecord = PropTypes.shape({

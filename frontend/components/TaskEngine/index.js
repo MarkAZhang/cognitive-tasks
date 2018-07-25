@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { assign, set, get, update, merge, concat, isFunction, isEmpty } from 'lodash/fp'
 
 import PropTypes from '~/utils/propTypes'
-import { logUserSession, userSignIn } from '~/utils/endpoints'
+import { logSession, userSignIn } from '~/utils/endpoints'
 
 import cs from './styles.css'
 
@@ -26,25 +26,18 @@ class TaskEngine extends Component {
         taskVars: this.props.initialTaskVars,
         sessionRecord: {},
         userMetadata: get('taskData.userMetadata', prevState) || {
-          serverId: null,
-          awsId: null,
+          testId: null,
+          age: null,
+          gender: null,
         },
       },
     }))
   }
 
-  setAwsId = awsId => {
-    this.updateTaskData('userMetadata.awsId', awsId)
-
-    this.setState({}, () => {
-      userSignIn(this.state.taskData.userMetadata).then(data => {
-        this.setServerId(data.userId)
-      })
-    })
-  }
-
-  setServerId = serverId => {
-    this.updateTaskData('userMetadata.serverId', serverId)
+  updateUserMetadata = userMetadata => {
+    this.setState(prevState => ({
+      taskData: merge(prevState.taskData, { userMetadata }),
+    }))
   }
 
   updateTaskVars = taskVars => {
@@ -84,9 +77,8 @@ class TaskEngine extends Component {
 
   logUserSession = () => {
     this.setState({}, () => {
-      logUserSession(
-        this.state.taskData.userMetadata.serverId,
-        this.state.taskData.sessionRecord,
+      logSession(
+        merge(this.state.taskData.sessionRecord, this.state.taskData.userMetadata)
       )
     })
   }
@@ -145,8 +137,7 @@ class TaskEngine extends Component {
         <CurrentState
           switchState={this.switchState}
           reset={this.reset}
-          setServerId={this.setServerId}
-          setAwsId={this.setAwsId}
+          updateUserMetadata={this.updateUserMetadata}
           startNewSession={this.startNewSession}
           shouldStartNewSession={this.shouldStartNewSession}
           endSession={this.endSession}
