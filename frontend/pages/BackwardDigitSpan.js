@@ -2,7 +2,7 @@ import { Component } from 'react'
 
 import { TaskEngine } from '~/components'
 import {
-  TitleState, InstructionState, CoreTaskState, EndState, LevelUpState
+  TitleState, InstructionState, CoreTaskState, LevelUpState
 } from '~/components/BackwardDigitSpan'
 
 // Reuse some components from NBack.
@@ -17,7 +17,6 @@ const taskStates = {
   signin: SignInState,
   instruction: InstructionState,
   core: CoreTaskState,
-  end: EndState,
   levelup: LevelUpState,
 }
 

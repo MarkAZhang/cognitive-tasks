@@ -1,5 +1,4 @@
 export CoreTaskState from './CoreTaskState'
-export EndState from './EndState'
 export InstructionState from './InstructionState'
 export LevelUpState from './LevelUpState'
 export TitleState from './TitleState'

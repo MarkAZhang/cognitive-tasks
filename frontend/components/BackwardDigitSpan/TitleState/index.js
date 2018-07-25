@@ -10,7 +10,7 @@ import cs from './styles.css'
 
 export default class TitleState extends Component {
   onContinue = () => {
-    if (this.props.userMetadata.awsId === null) {
+    if (this.props.userMetadata.testId === null) {
       this.props.switchState('signin')
     } else {
       this.props.switchState('instruction')
