@@ -1,3 +1,5 @@
+import { getDateString } from '~/utils/time'
+
 class ActionManager {
   constructor() {
     this.lastTime = new Date()
@@ -12,7 +14,7 @@ class ActionManager {
 
     const newActionEntry = {
       type,
-      timestamp: newTime.toString(),
+      timestamp: getDateString(newTime),
       ms: newTime.getTime() - this.lastTime.getTime() - msAdj,
       metadata,
     }

@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { assign, set, get, update, merge, concat, isFunction, isEmpty } from 'lodash/fp'
 
+import { getDateString } from '~/utils/time'
 import PropTypes from '~/utils/propTypes'
 import { logSession, userSignIn } from '~/utils/endpoints'
 
@@ -58,7 +59,7 @@ class TaskEngine extends Component {
   startNewSession = type => {
     this.updateTaskData('sessionRecord', {
       type,
-      startTime: (new Date()).toString(),
+      startTime: getDateString(new Date()),
       endTime: null,
       stages: [],
     })
@@ -75,7 +76,7 @@ class TaskEngine extends Component {
       this.updateTaskData('sessionRecord.stages', stages => concat(stages, this.state.currentStage))
     }
 
-    this.updateTaskData('sessionRecord.endTime', (new Date()).toString())
+    this.updateTaskData('sessionRecord.endTime', getDateString(new Date()))
 
     this.setState({
       currentStage: null,
