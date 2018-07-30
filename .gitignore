@@ -4,3 +4,5 @@ node_modules
 yarn-error.log
 gcloud-secret-key.json
 server-password.js
+challenge
+ssl

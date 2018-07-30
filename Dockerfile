@@ -8,11 +8,13 @@ RUN yarn install --production
 # Install packages and run build-prod and build-server before running Docker build.
 COPY backend-dist backend-dist
 COPY frontend-dist frontend-dist
+COPY ssl ssl
 
 COPY gcloud-secret-key.json .
 COPY server-password.js .
 COPY index.html .
 
 EXPOSE 80
+EXPOSE 443
 
 CMD npm run start-prod
