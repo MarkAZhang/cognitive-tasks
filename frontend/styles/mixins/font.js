@@ -12,6 +12,9 @@ const fontStyles = {
   instruction: {
     fontSize: 18,
   },
+  label: {
+    fontSize: 14,
+  },
   button: {
     fontSize: 14,
     textTransform: 'uppercase',

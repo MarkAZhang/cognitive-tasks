@@ -1,7 +1,9 @@
 import { get, isObject, isArray } from 'lodash/fp'
 
 const processValueForCSV = value => {
-  let finalValue = value !== undefined ? value.toString() : ''
+  let finalValue = (value !== undefined && value !== null)
+    ? value.toString()
+    : ''
 
   if (value instanceof Date) {
     finalValue = value.toLocaleString()

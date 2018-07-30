@@ -10,8 +10,8 @@ import cs from './styles.css'
 
 const COLUMNS = [
   {
-    header: 'Test ID',
-    key: 'testId',
+    header: 'MTurk Worker ID',
+    key: 'mturkId',
   },
   {
     header: 'Age',

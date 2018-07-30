@@ -58,8 +58,10 @@
   margin: 0 auto;
 
   .label {
-    @mixin font instruction;
+    @mixin font label;
     flex: 1 1 0;
+    text-align: right;
+    margin-right: 20px;
   }
 
   .inputContainer {

@@ -9,7 +9,7 @@ import cs from './styles.css'
 
 export default class SignInState extends Component {
   state = {
-    testId: '',
+    mturkId: '',
     age: '',
     gender: '',
     stage: 0,
@@ -17,9 +17,9 @@ export default class SignInState extends Component {
   }
 
   isContinueDisabled = () => {
-    const { stage, testId, age, gender } = this.state
+    const { stage, mturkId, age, gender } = this.state
     return stage === 2 &&
-      (testId === '' ||
+      (mturkId === '' ||
       !isFinite(toNumber(age, 10)) ||
       gender === '')
   }
@@ -32,9 +32,9 @@ export default class SignInState extends Component {
 
   onContinue = () => {
     if (this.state.stage === 2) {
-      const { testId, age, gender } = this.state
+      const { mturkId, age, gender } = this.state
       this.props.updateUserMetadata({
-        testId,
+        mturkId,
         age,
         gender,
       })
@@ -51,7 +51,7 @@ export default class SignInState extends Component {
 
   onIDChange = event => {
     this.setState({
-      testId: event.target.value,
+      mturkId: event.target.value,
     })
   }
 
@@ -109,9 +109,9 @@ export default class SignInState extends Component {
               To begin, please complete the following:
             </div>
             <div className={cs.field}>
-              <div className={cs.label}>Test ID</div>
+              <div className={cs.label}>MTurk Worker ID</div>
               <div className={cs.inputContainer}>
-                <input className={cs.input} type='text' onChange={this.onIDChange} value={this.state.testId} />
+                <input className={cs.input} type='text' onChange={this.onIDChange} value={this.state.mturkId} />
               </div>
             </div>
             <div className={cs.field}>
