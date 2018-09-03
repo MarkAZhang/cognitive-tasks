@@ -21,6 +21,11 @@ const taskStates = {
 }
 
 class BackwardDigitSpan extends Component {
+  componentWillMount() {
+    if (fbq) {
+      fbq('track', 'BackwardDigitSpan')
+    }
+  }
   render() {
     return (
       <div className={cs.center}>

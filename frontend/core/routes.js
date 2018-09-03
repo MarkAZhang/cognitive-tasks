@@ -4,7 +4,7 @@ import {BrowserRouter, Switch} from 'react-router-dom'
 import {
   BackwardDigitSpan, NBack, ReactionTime,
   UserTable, NBackSessionTable, DigitsSessionTable, ReactionSessionTable,
-  TestId,
+  TestId, Redirect,
 } from '../pages'
 
 export default (
@@ -18,6 +18,7 @@ export default (
       <Route path='/data-nback' component={NBackSessionTable} />
       <Route path='/data-digits' component={DigitsSessionTable} />
       <Route path='/data-reaction' component={ReactionSessionTable} />
+      <Route path='/survey' component={Redirect} />
     </Switch>
   </BrowserRouter>
 )

@@ -16,6 +16,11 @@ const taskStates = {
 }
 
 class NBack extends Component {
+  componentWillMount() {
+    if (fbq) {
+      fbq('track', 'NBack')
+    }
+  }
   render() {
     return (
       <div className={cs.center}>

@@ -23,7 +23,12 @@ const taskStates = {
   instruction: InstructionState,
 }
 
-class BackwardDigitSpan extends Component {
+class ReactionTime extends Component {
+  componentWillMount() {
+    if (fbq) {
+      fbq('track', 'ReactionTime')
+    }
+  }
   render() {
     return (
       <div className={cs.center}>
@@ -39,4 +44,4 @@ class BackwardDigitSpan extends Component {
   }
 }
 
-export default BackwardDigitSpan
+export default ReactionTime
