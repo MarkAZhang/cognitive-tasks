@@ -8,6 +8,7 @@ RUN yarn install --production
 # Install packages and run build-prod and build-server before running Docker build.
 COPY backend-dist backend-dist
 COPY frontend-dist frontend-dist
+COPY challenge challenge
 COPY ssl ssl
 
 COPY gcloud-secret-key.json .

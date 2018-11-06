@@ -9,6 +9,7 @@ import cs from './styles.css'
 
 export default class SignInState extends Component {
   state = {
+    // This should be 'testId', but keeping it 'mturkId' for backward compatibility.
     mturkId: '',
     age: '',
     gender: '',
@@ -109,7 +110,7 @@ export default class SignInState extends Component {
               To begin, please complete the following:
             </div>
             <div className={cs.field}>
-              <div className={cs.label}>MTurk Worker ID</div>
+              <div className={cs.label}>Test ID</div>
               <div className={cs.inputContainer}>
                 <input className={cs.input} type='text' onChange={this.onIDChange} value={this.state.mturkId} />
               </div>

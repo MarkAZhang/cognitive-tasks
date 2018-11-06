@@ -36,7 +36,7 @@ class TaskEngine extends Component {
         taskVars: this.props.initialTaskVars,
         sessionRecord: {},
         userMetadata: get('taskData.userMetadata', prevState) || {
-          testId: null,
+          mturkId: null,
           age: null,
           gender: null,
         },
@@ -141,7 +141,6 @@ class TaskEngine extends Component {
 
   render() {
     const CurrentState = this.props.taskStates[this.state.currentState]
-
     return (
       <div className={cs.taskEngineContainer}>
         <CurrentState

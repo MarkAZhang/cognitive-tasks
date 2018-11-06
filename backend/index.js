@@ -15,6 +15,11 @@ import {
 var app = express()
 
 const PATH_DIST = path.resolve(__dirname, '../frontend-dist')
+const PATH_DIST_CHALLENGE = path.resolve(__dirname, '../challenge')
+
+app.use('/static', express.static(PATH_DIST))
+app.use('/.well-known/acme-challenge', express.static(PATH_DIST_CHALLENGE))
+
 const privateKey = fs.readFileSync(path.resolve(__dirname, '../ssl/privkey.pem'), 'utf8')
 const certificate = fs.readFileSync(path.resolve(__dirname, '../ssl/cert.pem'), 'utf8')
 const ca = fs.readFileSync(path.resolve(__dirname, '../ssl/chain.pem'), 'utf8')
@@ -25,7 +30,6 @@ const credentials = {
   ca,
 }
 
-app.use('/static', express.static(PATH_DIST))
 app.use(bodyParser.json())       // to support JSON-encoded bodies
 
 app.post('/user/get_or_create', getOrCreate)
