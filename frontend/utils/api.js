@@ -74,7 +74,7 @@ const getWithAuthPrompt = async (baseUrl, data, tries = 0) => {
     )
   } catch (e) {
     if (e.message === '401' && tries < MAX_TRIES) {
-      sessionStorage.setItem('auth', btoa(`${prompt('Please enter the password.')}`)); // eslint-disable-line
+      sessionStorage.setItem('auth', prompt('Please enter the password.')); // eslint-disable-line
       return getWithAuthPrompt(baseUrl, data, tries + 1)
     }
     throw e
