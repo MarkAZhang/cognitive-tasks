@@ -8,9 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "export GOOGLE_APPLICATION_CREDENTIALS='./gcloud-secret-key.json' && node backend-dist/index.js",
     "start-prod": "export NODE_ENV=production && export GOOGLE_APPLICATION_CREDENTIALS='./gcloud-secret-key.json' && node backend-dist/index.js",
-    "build": "webpack",
-    "build-prod": "webpack --config webpack.config.prod.js",
+    "build-fe": "webpack",
+    "build-fe-prod": "webpack --config webpack.config.prod.js",
     "build-server": "babel backend -d backend-dist",
+    "build": "npm run build-fe && npm run build-server",
     "watch": "webpack --watch",
     "lint:js": "eslint front-end/src"
   },
