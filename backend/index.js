@@ -20,16 +20,6 @@ const PATH_DIST_CHALLENGE = path.resolve(__dirname, '../challenge')
 app.use('/static', express.static(PATH_DIST))
 app.use('/.well-known/acme-challenge', express.static(PATH_DIST_CHALLENGE))
 
-const privateKey = fs.readFileSync(path.resolve(__dirname, '../ssl/privkey.pem'), 'utf8')
-const certificate = fs.readFileSync(path.resolve(__dirname, '../ssl/cert.pem'), 'utf8')
-const ca = fs.readFileSync(path.resolve(__dirname, '../ssl/chain.pem'), 'utf8')
-
-const credentials = {
-  key: privateKey,
-  cert: certificate,
-  ca,
-}
-
 app.use(bodyParser.json())       // to support JSON-encoded bodies
 
 app.post('/user/get_or_create', getOrCreate)
@@ -45,7 +35,18 @@ app.get('/*', (req, res) => {
 })
 
 if (process.env.NODE_ENV === 'production') {
+
   console.log('Listening at port 80(HTTP) and port 443(HTTPS)!')
+
+  const privateKey = fs.readFileSync(path.resolve(__dirname, '../ssl/privkey.pem'), 'utf8')
+  const certificate = fs.readFileSync(path.resolve(__dirname, '../ssl/cert.pem'), 'utf8')
+  const ca = fs.readFileSync(path.resolve(__dirname, '../ssl/chain.pem'), 'utf8')
+
+  const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca,
+  }
 
   // Starting both http & https servers
   const httpServer = http.createServer(app)
