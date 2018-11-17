@@ -1,8 +1,19 @@
 import Datastore from '@google-cloud/datastore'
 import crypto from 'crypto'
+import fs from 'fs'
+import path from 'path'
 import { map, mapValues, groupBy, split, filter } from 'lodash/fp'
 
-import { PASSWORD } from '../server-password'
+let PASSWORD = null;
+
+// To set a password for the data pages,
+// put the password into a file called server-password.txt.
+const passwordPath = path.join(__dirname, '..', 'server-password.txt');
+
+if (fs.existsSync(passwordPath)) {
+  PASSWORD = fs.readFileSync(passwordPath, 'utf8');
+  PASSWORD = PASSWORD.trim()
+}
 
 const projectId = 'cognitive-tasks'
 
@@ -114,7 +125,7 @@ const logSession = async (req, res) => {
 const getProtectedEndpoint = endpoint => (req, res) => {
   const auth = split(' ', req.get('authorization'))
 
-  if (auth[1] !== PASSWORD) {
+  if (PASSWORD !== null && PASSWORD !== '' && auth[1] !== PASSWORD) {
     return res.status(401).send("Authorization Required");
   }
 

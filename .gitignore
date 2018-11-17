@@ -3,6 +3,6 @@ frontend-dist
 node_modules
 yarn-error.log
 gcloud-secret-key.json
-server-password.js
+server-password.txt
 challenge
 ssl
